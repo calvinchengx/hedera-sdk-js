@@ -8,6 +8,7 @@ whitelist: &whitelist
     - .npmignore
     - coverage/*
     - dist/*
+    - lib/*
     - node_modules/*
     - src/*
     - test/*
@@ -18,6 +19,8 @@ whitelist: &whitelist
     - tsconfig.json
     - tslint.json
     - jestconfig.json
+    - pbweb/*
+    - pbnode/*
 
 version: 2
 jobs:
