@@ -10,3 +10,10 @@ jobs:
 
     steps:
       - checkout
+
+  build:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: ~/repo
