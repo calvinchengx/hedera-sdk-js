@@ -51,6 +51,7 @@
     "hedera-grpc/**/*"
   ],
   "dependencies": {
-    "grpc-web": "^1.0.4"
+    "grpc-web": "^1.0.4",
+    "node-forge": "^0.8.2"
   }
 }

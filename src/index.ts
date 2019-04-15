@@ -10,6 +10,7 @@ class Hedera {
   clientFile: FileServiceClient
   clientContract: SmartContractServiceClient
   nodeAccountID: AccountID
+  nodeHostname: string
   operator: Operator
 
   constructor(build: Hedera.Client) {
@@ -17,6 +18,7 @@ class Hedera {
     this.clientFile = build.clientFile
     this.clientContract = build.clientContract
     this.nodeAccountID = build.nodeAccountID
+    this.nodeHostname = build.nodeHostname
     this.operator = build.operator
   }
 
@@ -38,13 +40,15 @@ namespace Hedera {
     clientFile: FileServiceClient
     clientContract: SmartContractServiceClient
     nodeAccountID: AccountID
+    nodeHostname: string
     operator: Operator
 
-    constructor(address: string, nodeAccountID: AccountID) {
-      this.clientCrypto = new CryptoServiceClient(address, null, null)
-      this.clientFile = new FileServiceClient(address, null, null)
-      this.clientContract = new SmartContractServiceClient(address, null, null)
+    constructor(nodeHostname: string, nodeAccountID: AccountID) {
+      this.clientCrypto = new CryptoServiceClient(nodeHostname, null, null)
+      this.clientFile = new FileServiceClient(nodeHostname, null, null)
+      this.clientContract = new SmartContractServiceClient(nodeHostname, null, null)
       this.nodeAccountID = nodeAccountID
+      this.nodeHostname = nodeHostname
       this.operator = new Operator()
     }
 

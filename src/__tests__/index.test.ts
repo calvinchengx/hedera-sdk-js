@@ -9,18 +9,18 @@ test('Hedera', () => {
     nodeAccountID.setAccountnum(3)
 
     // instantiate a Hedera client that can connect to our gRPC services
-    const hedera = new Hedera.Client('35.237.130.140:50211', nodeAccountID)
+    const client = new Hedera.Client('35.237.130.140:50211', nodeAccountID)
 
-    expect(hedera.nodeAccountID.getRealmnum()).toBe(0)
-    expect(hedera.nodeAccountID.getShardnum()).toBe(0)
-    expect(hedera.nodeAccountID.getAccountnum()).toBe(3)
+    expect(client.nodeAccountID.getRealmnum()).toBe(0)
+    expect(client.nodeAccountID.getShardnum()).toBe(0)
+    expect(client.nodeAccountID.getAccountnum()).toBe(3)
 
     const payingAccountID = new AccountID()
     payingAccountID.setAccountnum(4)
     const keyPair = new KeyPair()
-    const h = hedera.withOperator(keyPair, payingAccountID).connect()
+    const hedera = client.withOperator(keyPair, payingAccountID).connect()
 
-    expect(h.operator.account).toBe(payingAccountID)
-    expect(h.operator.keypair).toBe(keyPair)
+    expect(hedera.operator.account).toBe(payingAccountID)
+    expect(hedera.operator.keypair).toBe(keyPair)
 
 })
