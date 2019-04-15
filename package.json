@@ -45,5 +45,8 @@
   "files": [
     "lib/**/*",
     "hedera-grpc/**/*"
-  ]
+  ],
+  "dependencies": {
+    "grpc-web": "^1.0.4"
+  }
 }
