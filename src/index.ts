@@ -2,6 +2,7 @@ import { CryptoServiceClient } from '../pbweb/CryptoService_grpc_web_pb'
 import { FileServiceClient } from '../pbweb/FileService_grpc_web_pb'
 import { SmartContractServiceClient } from '../pbweb/SmartContractService_grpc_web_pb'
 import { AccountID } from '../pbweb/BasicTypes_pb'
+import KeyPair from './keypair'
 
 class Hedera {
 
@@ -22,9 +23,9 @@ class Hedera {
 }
 
 class Operator {
-  keypair: string
+  keypair: KeyPair
   account: AccountID
-  constructor(keypair: string = "", account: AccountID = new AccountID()) {
+  constructor(keypair: KeyPair = new KeyPair(), account: AccountID = new AccountID()) {
     this.keypair = keypair
     this.account = account
   }
@@ -47,7 +48,7 @@ namespace Hedera {
       this.operator = new Operator()
     }
 
-    withOperator(keypair: string, account: AccountID) {
+    withOperator(keypair: KeyPair, account: AccountID) {
       this.operator = new Operator(keypair, account)
       return this
     }

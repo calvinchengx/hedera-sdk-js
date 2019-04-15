@@ -1,5 +1,6 @@
 import { AccountID } from '../../pbweb/BasicTypes_pb';
 import Hedera from '../index'
+import KeyPair from '../keypair';
 
 test('Hedera', () => {
 
@@ -13,5 +14,13 @@ test('Hedera', () => {
     expect(hedera.nodeAccountID.getRealmnum()).toBe(0)
     expect(hedera.nodeAccountID.getShardnum()).toBe(0)
     expect(hedera.nodeAccountID.getAccountnum()).toBe(3)
+
+    const payingAccountID = new AccountID()
+    payingAccountID.setAccountnum(4)
+    const keyPair = new KeyPair()
+    const h = hedera.withOperator(keyPair, payingAccountID).connect()
+
+    expect(h.operator.account).toBe(payingAccountID)
+    expect(h.operator.keypair).toBe(keyPair)
 
 })
