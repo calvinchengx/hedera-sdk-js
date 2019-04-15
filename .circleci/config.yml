@@ -53,3 +53,23 @@ jobs:
           root: ~/repo
           <<: *whitelist
 
+  build:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Build
+          command: npm run build
+      - persist_to_workspace:
+          root: ~/repo
+          <<: *whitelist
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - checkout
+      - test
+      - build
