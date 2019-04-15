@@ -1,5 +1,9 @@
 # Hedera SDK, JavaScript
 
+[![NPM](https://img.shields.io/npm/v/hedera-sdk-js.svg)](https://img.shields.io/npm/v/hedera-sdk-js.svg)
+![CircleCI branch](https://img.shields.io/circleci/project/github/calvinchengx/hedera-sdk-js/master.svg?label=circleci)
+[![Snyk](https://img.shields.io/snyk/vulnerabilities/github/calvinchengx/hedera-sdk-js.svg)](https://img.shields.io/snyk/vulnerabilities/github/calvinchengx/hedera-sdk-js.svg)
+
 This repository tracks https://github.com/hashgraph/hedera-protobuf and is used to generate JavaScript gRPC packages for Hedera.
 
 ## Set up
