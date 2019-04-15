@@ -7,3 +7,6 @@ version: 2
 jobs:
   checkout:
     <<: *defaults
+
+    steps:
+      - checkout
