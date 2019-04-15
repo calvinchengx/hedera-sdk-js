@@ -35,10 +35,13 @@
   "devDependencies": {
     "@types/google-protobuf": "^3.2.7",
     "@types/jest": "^24.0.11",
+    "@types/jsdom": "^12.2.3",
+    "@types/node": "^11.13.4",
     "codecov": "^3.3.0",
     "google-protobuf": "^3.7.1",
     "grpc": "^1.18.0",
     "jest": "^24.7.1",
+    "jsdom": "^14.0.0",
     "prettier": "^1.17.0",
     "ts-jest": "^24.0.2",
     "ts-protoc-gen": "^0.9.0",
@@ -51,7 +54,10 @@
     "hedera-grpc/**/*"
   ],
   "dependencies": {
+    "@types/node-forge": "^0.8.2",
+    "@types/supertest": "^2.0.7",
     "grpc-web": "^1.0.4",
-    "node-forge": "^0.8.2"
+    "node-forge": "^0.8.2",
+    "supertest": "^4.0.2"
   }
 }
