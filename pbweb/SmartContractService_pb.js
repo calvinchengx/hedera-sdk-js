@@ -12,7 +12,10 @@ var goog = jspb;
 var global = Function('return this')();
 
 var TransactionResponse_pb = require('./TransactionResponse_pb.js');
+goog.object.extend(proto, TransactionResponse_pb);
 var Query_pb = require('./Query_pb.js');
+goog.object.extend(proto, Query_pb);
 var Response_pb = require('./Response_pb.js');
+goog.object.extend(proto, Response_pb);
 var Transaction_pb = require('./Transaction_pb.js');
-goog.object.extend(exports, proto.proto);
+goog.object.extend(proto, Transaction_pb);
