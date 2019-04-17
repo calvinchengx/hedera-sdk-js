@@ -20,7 +20,7 @@ test('Hedera', () => {
     const payingAccountID = new AccountID()
     payingAccountID.setAccountnum(4)
     const keypair = new KeyPair()
-    const hedera = builder.withOperator(payingAccountID, keypair).connect()
+    const hedera = builder.withOperator(payingAccountID, keypair).build()
 
     expect(hedera.operator.getAccountID()).toBe(payingAccountID)
     expect(hedera.operator.getKeyPair()).toBe(keypair)
