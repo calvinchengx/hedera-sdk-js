@@ -2,8 +2,9 @@ import { AccountID } from '../pbweb/BasicTypes_pb'
 import { CryptoServiceClient } from '../pbweb/CryptoService_grpc_web_pb'
 import { FileServiceClient } from '../pbweb/FileService_grpc_web_pb'
 import { SmartContractServiceClient } from '../pbweb/SmartContractService_grpc_web_pb'
+import HederaAccount from './hederaaccount';
+import HederaNode from './hederanode';
 import { HederaBuilder } from './index'
-import Operator from './operator'
 
 class Hedera {
 
@@ -17,16 +18,14 @@ class Hedera {
   public clientCrypto: CryptoServiceClient
   public clientFile: FileServiceClient
   public clientContract: SmartContractServiceClient
-  public nodeAccountID: AccountID
-  public nodeHostname: string
-  public operator: Operator
+  public node: HederaNode
+  public operator: HederaAccount
 
   constructor(build: HederaBuilder) {
     this.clientCrypto = build.clientCrypto
     this.clientFile = build.clientFile
     this.clientContract = build.clientContract
-    this.nodeAccountID = build.nodeAccountID
-    this.nodeHostname = build.nodeHostname
+    this.node = build.node
     this.operator = build.operator
   }
 

@@ -1,5 +1,6 @@
 import { Hedera, HederaBuilder } from '..'
 import { AccountID } from '../../pbweb/BasicTypes_pb'
+import HederaNode from '../hederanode'
 import KeyPair from '../keypair'
 
 test('Hedera', () => {
@@ -9,18 +10,19 @@ test('Hedera', () => {
     nodeAccountID.setAccountnum(3)
 
     // instantiate a Hedera client that can connect to our gRPC services
-    const builder = new HederaBuilder('35.237.130.140:50211', nodeAccountID)
+    const node = new HederaNode('testnet', '35.237.130.140:50211', nodeAccountID)
+    const builder = new HederaBuilder(node)
 
-    expect(builder.nodeAccountID.getRealmnum()).toBe(0)
-    expect(builder.nodeAccountID.getShardnum()).toBe(0)
-    expect(builder.nodeAccountID.getAccountnum()).toBe(3)
+    expect(builder.node.getAccountID().getRealmnum()).toBe(0)
+    expect(builder.node.getAccountID().getShardnum()).toBe(0)
+    expect(builder.node.getAccountID().getAccountnum()).toBe(3)
 
     const payingAccountID = new AccountID()
     payingAccountID.setAccountnum(4)
-    const keyPair = new KeyPair()
-    const hedera = builder.withOperator(keyPair, payingAccountID).connect()
+    const keypair = new KeyPair()
+    const hedera = builder.withOperator(payingAccountID, keypair).connect()
 
-    expect(hedera.operator.account).toBe(payingAccountID)
-    expect(hedera.operator.keypair).toBe(keyPair)
+    expect(hedera.operator.getAccountID()).toBe(payingAccountID)
+    expect(hedera.operator.getKeyPair()).toBe(keypair)
 
 })

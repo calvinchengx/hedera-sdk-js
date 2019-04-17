@@ -3,9 +3,9 @@ class KeyPair {
   public publicKey: string
   public privateKey: string
 
-  constructor(publicKey: string = "", privateKey: string = "") {
-    this.publicKey = publicKey
-    this.privateKey = privateKey
+  constructor(publicKeyHex: string = "", privateKeyHex: string = "") {
+    this.publicKey = publicKeyHex
+    this.privateKey = privateKeyHex
   }
 
 }

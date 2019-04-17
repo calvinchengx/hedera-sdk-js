@@ -3,35 +3,34 @@ import { CryptoServiceClient } from '../pbweb/CryptoService_grpc_web_pb'
 import { FileServiceClient } from '../pbweb/FileService_grpc_web_pb'
 import { SmartContractServiceClient } from '../pbweb/SmartContractService_grpc_web_pb'
 import Hedera from './hedera'
+import HederaAccount from './hederaaccount';
+import HederaNode from './hederanode';
 import KeyPair from './keypair'
-import Operator from './operator'
 
 class HederaBuilder {
 
   public clientCrypto: CryptoServiceClient
   public clientFile: FileServiceClient
   public clientContract: SmartContractServiceClient
-  public nodeAccountID: AccountID
-  public nodeHostname: string
-  public operator: Operator
+  public node: HederaNode
+  public operator: HederaAccount  // operator refers to the account that pays for transactions and querys
 
-  constructor(nodeHostname: string, nodeAccountID: AccountID) {
-    this.clientCrypto = new CryptoServiceClient(nodeHostname, null, null)
-    this.clientFile = new FileServiceClient(nodeHostname, null, null)
-    this.clientContract = new SmartContractServiceClient(nodeHostname, null, null)
-    this.nodeAccountID = nodeAccountID
-    this.nodeHostname = nodeHostname
-    this.operator = new Operator()
+  constructor(node: HederaNode) {
+    this.clientCrypto = new CryptoServiceClient(node.getHostname(), null, null)
+    this.clientFile = new FileServiceClient(node.getHostname(), null, null)
+    this.clientContract = new SmartContractServiceClient(node.getHostname(), null, null)
+    this.node = node
+    this.operator = new HederaAccount()
   }
 
-  public withOperator(keypair: KeyPair, account: AccountID) {
-    this.operator = new Operator(keypair, account)
+  public withOperator(account: AccountID, keypair: KeyPair) {
+    this.operator = new HederaAccount(account, keypair)
     return this
   }
 
-  public connect() {
+  public build() {
     return new Hedera(this)
   }
 }
 
-export { HederaBuilder, Hedera }
+export { HederaBuilder, Hedera, HederaAccount }

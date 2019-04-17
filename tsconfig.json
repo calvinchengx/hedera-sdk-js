@@ -5,6 +5,7 @@
     "outDir": "./lib",
     "strict": true,
     "allowJs": true,
+    "resolveJsonModule": true,
     "esModuleInterop": true
   },
   "include": ["src/**/*"],
