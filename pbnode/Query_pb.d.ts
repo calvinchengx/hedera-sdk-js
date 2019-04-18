@@ -1,6 +1,8 @@
 // package: proto
 // file: Query.proto
 
+/* tslint:disable */
+
 import * as jspb from "google-protobuf";
 import * as GetByKey_pb from "./GetByKey_pb";
 import * as GetBySolidityID_pb from "./GetBySolidityID_pb";
@@ -19,136 +21,171 @@ import * as TransactionGetReceipt_pb from "./TransactionGetReceipt_pb";
 import * as TransactionGetRecord_pb from "./TransactionGetRecord_pb";
 import * as TransactionGetFastRecord_pb from "./TransactionGetFastRecord_pb";
 
-export class Query extends jspb.Message {
-  hasGetbykey(): boolean;
-  clearGetbykey(): void;
-  getGetbykey(): GetByKey_pb.GetByKeyQuery | undefined;
-  setGetbykey(value?: GetByKey_pb.GetByKeyQuery): void;
+export class Query extends jspb.Message { 
 
-  hasGetbysolidityid(): boolean;
-  clearGetbysolidityid(): void;
-  getGetbysolidityid(): GetBySolidityID_pb.GetBySolidityIDQuery | undefined;
-  setGetbysolidityid(value?: GetBySolidityID_pb.GetBySolidityIDQuery): void;
+    hasGetbykey(): boolean;
+    clearGetbykey(): void;
+    getGetbykey(): GetByKey_pb.GetByKeyQuery | undefined;
+    setGetbykey(value?: GetByKey_pb.GetByKeyQuery): void;
 
-  hasContractcalllocal(): boolean;
-  clearContractcalllocal(): void;
-  getContractcalllocal(): ContractCallLocal_pb.ContractCallLocalQuery | undefined;
-  setContractcalllocal(value?: ContractCallLocal_pb.ContractCallLocalQuery): void;
 
-  hasContractgetinfo(): boolean;
-  clearContractgetinfo(): void;
-  getContractgetinfo(): ContractGetInfo_pb.ContractGetInfoQuery | undefined;
-  setContractgetinfo(value?: ContractGetInfo_pb.ContractGetInfoQuery): void;
+    hasGetbysolidityid(): boolean;
+    clearGetbysolidityid(): void;
+    getGetbysolidityid(): GetBySolidityID_pb.GetBySolidityIDQuery | undefined;
+    setGetbysolidityid(value?: GetBySolidityID_pb.GetBySolidityIDQuery): void;
 
-  hasContractgetbytecode(): boolean;
-  clearContractgetbytecode(): void;
-  getContractgetbytecode(): ContractGetBytecode_pb.ContractGetBytecodeQuery | undefined;
-  setContractgetbytecode(value?: ContractGetBytecode_pb.ContractGetBytecodeQuery): void;
 
-  hasContractgetrecords(): boolean;
-  clearContractgetrecords(): void;
-  getContractgetrecords(): ContractGetRecords_pb.ContractGetRecordsQuery | undefined;
-  setContractgetrecords(value?: ContractGetRecords_pb.ContractGetRecordsQuery): void;
+    hasContractcalllocal(): boolean;
+    clearContractcalllocal(): void;
+    getContractcalllocal(): ContractCallLocal_pb.ContractCallLocalQuery | undefined;
+    setContractcalllocal(value?: ContractCallLocal_pb.ContractCallLocalQuery): void;
 
-  hasCryptogetaccountbalance(): boolean;
-  clearCryptogetaccountbalance(): void;
-  getCryptogetaccountbalance(): CryptoGetAccountBalance_pb.CryptoGetAccountBalanceQuery | undefined;
-  setCryptogetaccountbalance(value?: CryptoGetAccountBalance_pb.CryptoGetAccountBalanceQuery): void;
 
-  hasCryptogetaccountrecords(): boolean;
-  clearCryptogetaccountrecords(): void;
-  getCryptogetaccountrecords(): CryptoGetAccountRecords_pb.CryptoGetAccountRecordsQuery | undefined;
-  setCryptogetaccountrecords(value?: CryptoGetAccountRecords_pb.CryptoGetAccountRecordsQuery): void;
+    hasContractgetinfo(): boolean;
+    clearContractgetinfo(): void;
+    getContractgetinfo(): ContractGetInfo_pb.ContractGetInfoQuery | undefined;
+    setContractgetinfo(value?: ContractGetInfo_pb.ContractGetInfoQuery): void;
 
-  hasCryptogetinfo(): boolean;
-  clearCryptogetinfo(): void;
-  getCryptogetinfo(): CryptoGetInfo_pb.CryptoGetInfoQuery | undefined;
-  setCryptogetinfo(value?: CryptoGetInfo_pb.CryptoGetInfoQuery): void;
 
-  hasCryptogetclaim(): boolean;
-  clearCryptogetclaim(): void;
-  getCryptogetclaim(): CryptoGetClaim_pb.CryptoGetClaimQuery | undefined;
-  setCryptogetclaim(value?: CryptoGetClaim_pb.CryptoGetClaimQuery): void;
+    hasContractgetbytecode(): boolean;
+    clearContractgetbytecode(): void;
+    getContractgetbytecode(): ContractGetBytecode_pb.ContractGetBytecodeQuery | undefined;
+    setContractgetbytecode(value?: ContractGetBytecode_pb.ContractGetBytecodeQuery): void;
 
-  hasCryptogetproxystakers(): boolean;
-  clearCryptogetproxystakers(): void;
-  getCryptogetproxystakers(): CryptoGetStakers_pb.CryptoGetStakersQuery | undefined;
-  setCryptogetproxystakers(value?: CryptoGetStakers_pb.CryptoGetStakersQuery): void;
 
-  hasFilegetcontents(): boolean;
-  clearFilegetcontents(): void;
-  getFilegetcontents(): FileGetContents_pb.FileGetContentsQuery | undefined;
-  setFilegetcontents(value?: FileGetContents_pb.FileGetContentsQuery): void;
+    hasContractgetrecords(): boolean;
+    clearContractgetrecords(): void;
+    getContractgetrecords(): ContractGetRecords_pb.ContractGetRecordsQuery | undefined;
+    setContractgetrecords(value?: ContractGetRecords_pb.ContractGetRecordsQuery): void;
 
-  hasFilegetinfo(): boolean;
-  clearFilegetinfo(): void;
-  getFilegetinfo(): FileGetInfo_pb.FileGetInfoQuery | undefined;
-  setFilegetinfo(value?: FileGetInfo_pb.FileGetInfoQuery): void;
 
-  hasTransactiongetreceipt(): boolean;
-  clearTransactiongetreceipt(): void;
-  getTransactiongetreceipt(): TransactionGetReceipt_pb.TransactionGetReceiptQuery | undefined;
-  setTransactiongetreceipt(value?: TransactionGetReceipt_pb.TransactionGetReceiptQuery): void;
+    hasCryptogetaccountbalance(): boolean;
+    clearCryptogetaccountbalance(): void;
+    getCryptogetaccountbalance(): CryptoGetAccountBalance_pb.CryptoGetAccountBalanceQuery | undefined;
+    setCryptogetaccountbalance(value?: CryptoGetAccountBalance_pb.CryptoGetAccountBalanceQuery): void;
 
-  hasTransactiongetrecord(): boolean;
-  clearTransactiongetrecord(): void;
-  getTransactiongetrecord(): TransactionGetRecord_pb.TransactionGetRecordQuery | undefined;
-  setTransactiongetrecord(value?: TransactionGetRecord_pb.TransactionGetRecordQuery): void;
 
-  hasTransactiongetfastrecord(): boolean;
-  clearTransactiongetfastrecord(): void;
-  getTransactiongetfastrecord(): TransactionGetFastRecord_pb.TransactionGetFastRecordQuery | undefined;
-  setTransactiongetfastrecord(value?: TransactionGetFastRecord_pb.TransactionGetFastRecordQuery): void;
+    hasCryptogetaccountrecords(): boolean;
+    clearCryptogetaccountrecords(): void;
+    getCryptogetaccountrecords(): CryptoGetAccountRecords_pb.CryptoGetAccountRecordsQuery | undefined;
+    setCryptogetaccountrecords(value?: CryptoGetAccountRecords_pb.CryptoGetAccountRecordsQuery): void;
 
-  getQueryCase(): Query.QueryCase;
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): Query.AsObject;
-  static toObject(includeInstance: boolean, msg: Query): Query.AsObject;
-  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: Query, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): Query;
-  static deserializeBinaryFromReader(message: Query, reader: jspb.BinaryReader): Query;
+
+    hasCryptogetinfo(): boolean;
+    clearCryptogetinfo(): void;
+    getCryptogetinfo(): CryptoGetInfo_pb.CryptoGetInfoQuery | undefined;
+    setCryptogetinfo(value?: CryptoGetInfo_pb.CryptoGetInfoQuery): void;
+
+
+    hasCryptogetclaim(): boolean;
+    clearCryptogetclaim(): void;
+    getCryptogetclaim(): CryptoGetClaim_pb.CryptoGetClaimQuery | undefined;
+    setCryptogetclaim(value?: CryptoGetClaim_pb.CryptoGetClaimQuery): void;
+
+
+    hasCryptogetproxystakers(): boolean;
+    clearCryptogetproxystakers(): void;
+    getCryptogetproxystakers(): CryptoGetStakers_pb.CryptoGetStakersQuery | undefined;
+    setCryptogetproxystakers(value?: CryptoGetStakers_pb.CryptoGetStakersQuery): void;
+
+
+    hasFilegetcontents(): boolean;
+    clearFilegetcontents(): void;
+    getFilegetcontents(): FileGetContents_pb.FileGetContentsQuery | undefined;
+    setFilegetcontents(value?: FileGetContents_pb.FileGetContentsQuery): void;
+
+
+    hasFilegetinfo(): boolean;
+    clearFilegetinfo(): void;
+    getFilegetinfo(): FileGetInfo_pb.FileGetInfoQuery | undefined;
+    setFilegetinfo(value?: FileGetInfo_pb.FileGetInfoQuery): void;
+
+
+    hasTransactiongetreceipt(): boolean;
+    clearTransactiongetreceipt(): void;
+    getTransactiongetreceipt(): TransactionGetReceipt_pb.TransactionGetReceiptQuery | undefined;
+    setTransactiongetreceipt(value?: TransactionGetReceipt_pb.TransactionGetReceiptQuery): void;
+
+
+    hasTransactiongetrecord(): boolean;
+    clearTransactiongetrecord(): void;
+    getTransactiongetrecord(): TransactionGetRecord_pb.TransactionGetRecordQuery | undefined;
+    setTransactiongetrecord(value?: TransactionGetRecord_pb.TransactionGetRecordQuery): void;
+
+
+    hasTransactiongetfastrecord(): boolean;
+    clearTransactiongetfastrecord(): void;
+    getTransactiongetfastrecord(): TransactionGetFastRecord_pb.TransactionGetFastRecordQuery | undefined;
+    setTransactiongetfastrecord(value?: TransactionGetFastRecord_pb.TransactionGetFastRecordQuery): void;
+
+
+    getQueryCase(): Query.QueryCase;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): Query.AsObject;
+    static toObject(includeInstance: boolean, msg: Query): Query.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: Query, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): Query;
+    static deserializeBinaryFromReader(message: Query, reader: jspb.BinaryReader): Query;
 }
 
 export namespace Query {
-  export type AsObject = {
-    getbykey?: GetByKey_pb.GetByKeyQuery.AsObject,
-    getbysolidityid?: GetBySolidityID_pb.GetBySolidityIDQuery.AsObject,
-    contractcalllocal?: ContractCallLocal_pb.ContractCallLocalQuery.AsObject,
-    contractgetinfo?: ContractGetInfo_pb.ContractGetInfoQuery.AsObject,
-    contractgetbytecode?: ContractGetBytecode_pb.ContractGetBytecodeQuery.AsObject,
-    contractgetrecords?: ContractGetRecords_pb.ContractGetRecordsQuery.AsObject,
-    cryptogetaccountbalance?: CryptoGetAccountBalance_pb.CryptoGetAccountBalanceQuery.AsObject,
-    cryptogetaccountrecords?: CryptoGetAccountRecords_pb.CryptoGetAccountRecordsQuery.AsObject,
-    cryptogetinfo?: CryptoGetInfo_pb.CryptoGetInfoQuery.AsObject,
-    cryptogetclaim?: CryptoGetClaim_pb.CryptoGetClaimQuery.AsObject,
-    cryptogetproxystakers?: CryptoGetStakers_pb.CryptoGetStakersQuery.AsObject,
-    filegetcontents?: FileGetContents_pb.FileGetContentsQuery.AsObject,
-    filegetinfo?: FileGetInfo_pb.FileGetInfoQuery.AsObject,
-    transactiongetreceipt?: TransactionGetReceipt_pb.TransactionGetReceiptQuery.AsObject,
-    transactiongetrecord?: TransactionGetRecord_pb.TransactionGetRecordQuery.AsObject,
-    transactiongetfastrecord?: TransactionGetFastRecord_pb.TransactionGetFastRecordQuery.AsObject,
-  }
+    export type AsObject = {
+        getbykey?: GetByKey_pb.GetByKeyQuery.AsObject,
+        getbysolidityid?: GetBySolidityID_pb.GetBySolidityIDQuery.AsObject,
+        contractcalllocal?: ContractCallLocal_pb.ContractCallLocalQuery.AsObject,
+        contractgetinfo?: ContractGetInfo_pb.ContractGetInfoQuery.AsObject,
+        contractgetbytecode?: ContractGetBytecode_pb.ContractGetBytecodeQuery.AsObject,
+        contractgetrecords?: ContractGetRecords_pb.ContractGetRecordsQuery.AsObject,
+        cryptogetaccountbalance?: CryptoGetAccountBalance_pb.CryptoGetAccountBalanceQuery.AsObject,
+        cryptogetaccountrecords?: CryptoGetAccountRecords_pb.CryptoGetAccountRecordsQuery.AsObject,
+        cryptogetinfo?: CryptoGetInfo_pb.CryptoGetInfoQuery.AsObject,
+        cryptogetclaim?: CryptoGetClaim_pb.CryptoGetClaimQuery.AsObject,
+        cryptogetproxystakers?: CryptoGetStakers_pb.CryptoGetStakersQuery.AsObject,
+        filegetcontents?: FileGetContents_pb.FileGetContentsQuery.AsObject,
+        filegetinfo?: FileGetInfo_pb.FileGetInfoQuery.AsObject,
+        transactiongetreceipt?: TransactionGetReceipt_pb.TransactionGetReceiptQuery.AsObject,
+        transactiongetrecord?: TransactionGetRecord_pb.TransactionGetRecordQuery.AsObject,
+        transactiongetfastrecord?: TransactionGetFastRecord_pb.TransactionGetFastRecordQuery.AsObject,
+    }
 
-  export enum QueryCase {
-    QUERY_NOT_SET = 0,
+    export enum QueryCase {
+        QUERY_NOT_SET = 0,
+    
     GETBYKEY = 1,
-    GETBYSOLIDITYID = 2,
-    CONTRACTCALLLOCAL = 3,
-    CONTRACTGETINFO = 4,
-    CONTRACTGETBYTECODE = 5,
-    CONTRACTGETRECORDS = 6,
-    CRYPTOGETACCOUNTBALANCE = 7,
-    CRYPTOGETACCOUNTRECORDS = 8,
-    CRYPTOGETINFO = 9,
-    CRYPTOGETCLAIM = 10,
-    CRYPTOGETPROXYSTAKERS = 11,
-    FILEGETCONTENTS = 12,
-    FILEGETINFO = 13,
-    TRANSACTIONGETRECEIPT = 14,
-    TRANSACTIONGETRECORD = 15,
-    TRANSACTIONGETFASTRECORD = 16,
-  }
-}
 
+    GETBYSOLIDITYID = 2,
+
+    CONTRACTCALLLOCAL = 3,
+
+    CONTRACTGETINFO = 4,
+
+    CONTRACTGETBYTECODE = 5,
+
+    CONTRACTGETRECORDS = 6,
+
+    CRYPTOGETACCOUNTBALANCE = 7,
+
+    CRYPTOGETACCOUNTRECORDS = 8,
+
+    CRYPTOGETINFO = 9,
+
+    CRYPTOGETCLAIM = 10,
+
+    CRYPTOGETPROXYSTAKERS = 11,
+
+    FILEGETCONTENTS = 12,
+
+    FILEGETINFO = 13,
+
+    TRANSACTIONGETRECEIPT = 14,
+
+    TRANSACTIONGETRECORD = 15,
+
+    TRANSACTIONGETFASTRECORD = 16,
+
+    }
+
+}

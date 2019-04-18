@@ -1,6 +1,6 @@
-// import grpc from 'grpc'
+import grpc from 'grpc'
 import { AccountID } from '../pbweb/BasicTypes_pb'
-// import ClientNode from './clientnode';
+import ClientNode from './clientnode';
 import ClientWeb from './clientweb';
 import Hedera from './hedera'
 import HederaAccount from './hederaaccount';
@@ -11,14 +11,14 @@ import KeyPair from './keypair'
 class HederaBuilder {
 
   public clientWeb: ClientWeb
-  // public clientNode: ClientNode
+  public clientNode: ClientNode
 
   public node: HederaNode
   public operator: HederaAccount  // operator refers to the account that pays for transactions and querys
 
   constructor(node: HederaNode) {
     this.clientWeb = new ClientWeb(node.getHostname(), null, null)                                 // gRPC web javascript
-    // this.clientNode = new ClientNode(node.getHostname(), grpc.credentials.createInsecure(), null)  // gRPC nodejs
+    this.clientNode = new ClientNode(node.getHostname(), grpc.credentials.createInsecure(), null)  // gRPC nodejs
     this.node = node
     this.operator = new HederaAccount()
   }

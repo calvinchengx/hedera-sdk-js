@@ -1,4 +1,4 @@
-// import ClientNode from './clientnode';
+import ClientNode from './clientnode';
 import ClientWeb from './clientweb';
 import HederaAccount from './hederaaccount';
 import HederaNode from './hederanode';
@@ -14,13 +14,13 @@ class Hedera {
   }
 
   public clientWeb: ClientWeb
-  // public clientNode: ClientNode
+  public clientNode: ClientNode
   public node: HederaNode
   public operator: HederaAccount
 
   constructor(build: HederaBuilder) {
     this.clientWeb = build.clientWeb
-    // this.clientNode = build.clientNode
+    this.clientNode = build.clientNode
     this.node = build.node
     this.operator = build.operator
   }

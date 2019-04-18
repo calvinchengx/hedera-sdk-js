@@ -2,9 +2,9 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
+    "declaration": true,
     "outDir": "./lib",
     "strict": true,
-    "allowJs": true,
     "resolveJsonModule": true,
     "esModuleInterop": true
   },

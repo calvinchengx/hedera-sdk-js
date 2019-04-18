@@ -20,19 +20,17 @@ do
   # Supports both JavaScript and TypeScript. TypeScript gives us autocomplete functionality.
   mkdir -p ${OUT_DIR}
 
-  # TypeScript
-  protoc -I=${PROTO_DIR} \
-      --plugin=protoc-gen-grpc=`which grpc_tools_node_protoc_plugin`\
-      --plugin=protoc-gen-ts=${PROTOC_GEN_TS_PATH} \
-      --ts_out=${OUT_DIR} \
-      --grpc_out=${OUT_DIR} \
-      ${PROTO_DIR}/*.proto
-
-  # JavaScript
-  protoc -I=${PROTO_DIR} \
-      --plugin=protoc-gen-grpc=`which grpc_tools_node_protoc_plugin`\
+  # Generate JavaScript code via grpc-tools
+  grpc_tools_node_protoc -I ${PROTO_DIR} \
+      --plugin=protoc-gen-grpc=`which grpc_tools_node_protoc_plugin` \
       --js_out=import_style=commonjs,binary:${OUT_DIR} \
       --grpc_out=${OUT_DIR} \
+      ${PROTO_DIR}/*proto
+
+  # Generate d.ts TypeScript definitions
+  protoc -I ${PROTO_DIR} \
+      --plugin=protoc-gen-ts=${PROTOC_GEN_TS_PATH} \
+      --ts_out=${OUT_DIR} \
       ${PROTO_DIR}/*.proto
 
   echo "############################################################"

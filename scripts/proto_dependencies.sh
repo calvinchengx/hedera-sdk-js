@@ -8,7 +8,12 @@ export NODE_PROTOC=`which grpc_tools_node_protoc_plugin`
 if [ "$NODE_PROTOC" = "" ]; then
     npm install -g grpc-tools
 fi
-export PROTOC_GEN_TS_PATH="./node_modules/.bin/protoc-gen-ts"
+
+export PROTOC_GEN_TS_PATH=`which protoc-gen-ts`
+export NODE_PROTOC_TS=`which grpc_tools_node_protoc_ts`
+if [ "$NODE_PROTOC_TS" = "" ] || [ "$PROTOC_GEN_TS_PATH" = "" ]; then
+    npm install -g grpc_tools_node_protoc_ts
+fi
 
 WEB_PROTOC=`which protoc-gen-grpc-web`
 if [ "$WEB_PROTOC" = "" ]; then
