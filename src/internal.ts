@@ -1,7 +1,23 @@
+import nano from 'nano-seconds'
 import * as forge from 'node-forge'
 import { AccountID, Signature } from '../pbweb/BasicTypes_pb'
+import { Duration } from '../pbweb/Duration_pb';
+import { Timestamp } from '../pbweb/Timestamp_pb';
 
 const ed25519 = forge.pki.ed25519
+
+// function hexStringToByte(str: string) : Uint8Array {
+//     if (!str) {
+//       return new Uint8Array();
+//     }
+    
+//     const a = [];
+//     for (let i = 0, len = str.length; i < len; i+=2) {
+//       a.push(parseInt(str.substr(i,2),16));
+//     }
+    
+//     return new Uint8Array(a);
+//   }
 
 type Sig = Signature | undefined
 
@@ -18,32 +34,26 @@ function signWithKeyAndVerify(
     publicKeyHex: string
 ): Sig {
     const encoding = 'binary'
-    const privateKey = Buffer.from(
-        forge.util.hexToBytes(privateKeyHex),
-        encoding
-    )
+    const privateKey = Buffer.from(forge.util.hexToBytes(privateKeyHex), encoding)
     const publicKey = Buffer.from(forge.util.hexToBytes(publicKeyHex), encoding)
-    try {
-        const signature = ed25519.sign({
-            encoding,
-            message,
-            privateKey
-        })
-        const verified = ed25519.verify({
-            encoding,
-            message,
-            publicKey,
-            signature
-        })
-        if (verified !== true) {
-            return undefined
-        }
-        const sig = new Signature()
-        sig.setEd25519(signature)
-        return sig
-    } catch (e) {
-        throw e
+
+    const signature = ed25519.sign({
+        encoding,
+        message,
+        privateKey
+    })
+    const verified = ed25519.verify({
+        encoding,
+        message,
+        publicKey,
+        signature
+    })
+    if (verified !== true) {
+        return undefined
     }
+    const sig = new Signature()
+    sig.setEd25519(signature)
+    return sig
 }
 
 /**
@@ -77,7 +87,35 @@ function accountIDFromString(account: string): AccountID {
     return accountID
 }
 
+/**
+ * getDuration sets the length of duration the transaction stays in Hedera network
+ */
+function getDuration(seconds: number = 60) {
+    const d = new Duration()
+    d.setSeconds(seconds)
+    return d
+}
+
+function getTimestamp() {
+    const ts = new Timestamp()
+    const ns = nano.now()
+    const secondsInDeci = parseInt(nano.toString(ns), 10) / 1000000000
+    const splitSeconds = secondsInDeci.toString().split('.')
+    const seconds = parseInt(splitSeconds[0], 10)
+    const nanosecond = parseInt(splitSeconds[1], 10)
+    ts.setSeconds(seconds)
+    ts.setNanos(nanosecond)
+    return ts
+} 
+
+function getFee() {
+    return 100000
+}
+
 export default {
     accountIDFromString,
+    getDuration,
+    getFee,
+    getTimestamp,
     signWithKeyAndVerify
 }

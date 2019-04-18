@@ -1,9 +1,12 @@
+import forge from 'node-forge'
 import { AccountID } from '../pbweb/BasicTypes_pb'
 import i from './internal'
 import KeyPair from './keypair'
 
+const ed25519 = forge.pki.ed25519
+
 class HederaAccount {
-    public static init(
+    public static initWith(
         accountIDString: string,
         publicKeyHex: string,
         privateKeyHex: string
@@ -11,6 +14,18 @@ class HederaAccount {
         const accountID = i.accountIDFromString(accountIDString)
         const keypair = new KeyPair(publicKeyHex, privateKeyHex)
         return new HederaAccount(accountID, keypair)
+    }
+
+    // Generate ed25519 keypair and initialise new account
+    public static init() {
+        const seed = forge.random.getBytesSync(32)
+        const kp = ed25519.generateKeyPair({ seed })
+        const publicKeyBuffer = forge.util.createBuffer(kp.publicKey)
+        const publicKeyHex = forge.util.bytesToHex(publicKeyBuffer.data)
+        const privateKeyBuffer = forge.util.createBuffer(kp.privateKey)
+        const privateKeyHex = forge.util.bytesToHex(privateKeyBuffer.data)
+        const keypair = new KeyPair(publicKeyHex, privateKeyHex)
+        return new HederaAccount(undefined, keypair)
     }
 
     private accountID?: AccountID

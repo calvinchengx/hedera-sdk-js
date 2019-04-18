@@ -17,6 +17,7 @@ function cryptoCreate(
     body.setKey(publicKey)
     body.setInitialbalance(initialBalance)
     body.setAutorenewperiod(duration)
+    return body
 }
 
 export default cryptoCreate

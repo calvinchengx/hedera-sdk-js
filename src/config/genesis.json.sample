@@ -1,5 +1,6 @@
 {
   "account": "",
   "pubKey": "",
-  "privKey": ""
+  "privKey": "",
+  "asn1": true
 }
