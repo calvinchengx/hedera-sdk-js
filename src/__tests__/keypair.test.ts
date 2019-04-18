@@ -1,6 +1,6 @@
-import KeyPair from "../keypair";
+import KeyPair from '../keypair'
 
 test('KeyPair', () => {
-  const keyPair = new KeyPair()
-  expect(keyPair).toBe(keyPair)
+    const keyPair = new KeyPair()
+    expect(keyPair).toBe(keyPair)
 })

@@ -4,13 +4,16 @@ import HederaNode from '../hederanode'
 import KeyPair from '../keypair'
 
 test('Hedera', () => {
-
     // instantiate an example account
     const nodeAccountID = new AccountID()
     nodeAccountID.setAccountnum(3)
 
     // instantiate a Hedera client that can connect to our gRPC services
-    const node = new HederaNode('testnet', '35.237.130.140:50211', nodeAccountID)
+    const node = new HederaNode(
+        'testnet',
+        '35.237.130.140:50211',
+        nodeAccountID
+    )
     const builder = new HederaBuilder(node)
 
     expect(builder.node.getAccountID().getRealmnum()).toBe(0)
@@ -24,5 +27,4 @@ test('Hedera', () => {
 
     expect(hedera.operator.getAccountID()).toBe(payingAccountID)
     expect(hedera.operator.getKeyPair()).toBe(keypair)
-
 })
