@@ -66,6 +66,9 @@ test('HederaAccount payingAccount has correct values', () => {
 })
 
 test('HederaNode has correct values', () => {
+    if (genesis === undefined) {
+        return
+    }
     // since we only have 1 single testnet node in our addressbook at the moment, we can expect
     expect(node.getNetwork()).toBe('testnet')
     expect(node.getHostname()).toBe('35.237.130.140:50211')
@@ -73,6 +76,9 @@ test('HederaNode has correct values', () => {
 })
 
 test('New HederaAccount has correct values', () => {
+    if (genesis === undefined) {
+        return
+    }
     // Since our newAccount object is newly initialised and hasn't been sent to Hedera network yet,
     // its AccountID attribute should be undefined
     expect(newAccount.getAccountID()).toBeUndefined()
@@ -85,6 +91,9 @@ test('New HederaAccount has correct values', () => {
 })
 
 test('Hedera client has correct values', async () => {
+    if (genesis === undefined) {
+        return
+    }
     // instantiate a Hedera client which connects to Hedera network
     // via the given node,
     // with the given payingAccount,
