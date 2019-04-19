@@ -29,12 +29,13 @@ class HederaAccount {
      */
     public static init() {
         const seed = forge.random.getBytesSync(32)
+        const seedBuffer = Buffer.from(seed, 'binary')
         const kp = ed25519.generateKeyPair({ seed })
         const publicKeyBuffer = forge.util.createBuffer(kp.publicKey)
         const publicKeyHex = forge.util.bytesToHex(publicKeyBuffer.data)
         const privateKeyBuffer = forge.util.createBuffer(kp.privateKey)
         const privateKeyHex = forge.util.bytesToHex(privateKeyBuffer.data)
-        const keypair = new KeyPair(publicKeyHex, privateKeyHex)
+        const keypair = new KeyPair(publicKeyHex, privateKeyHex, false, seedBuffer)
         return new HederaAccount(undefined, keypair)
     }
 
@@ -56,6 +57,13 @@ class HederaAccount {
 
     public getAccountID(): AccountID | undefined {
         return this.accountID
+    }
+
+    public getAccountIDAsString(): string | undefined {
+        if (this.accountID !== undefined) {
+            return i.accountIDAsString(this.accountID)
+        }
+        return undefined
     }
 
     public getKeyPair(): KeyPair | undefined {

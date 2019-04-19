@@ -12,7 +12,8 @@ class KeyPair {
     constructor(
         publicKeyHex: string,
         privateKeyHex: string,
-        asn1: boolean = false
+        asn1: boolean = false,
+        seed?: Buffer
     ) {
         if (asn1 === true) {
             const {
@@ -26,6 +27,7 @@ class KeyPair {
         } else {
             this.publicKeyHex = publicKeyHex
             this.privateKeyHex = privateKeyHex
+            this.seed = seed
         }
     }
 
