@@ -2,7 +2,6 @@ import { ASN1, BitString, Class, Tag } from '@fidm/asn1'
 import forge from 'node-forge'
 import { HederaAccount, HederaBuilder } from '..'
 import { AccountID } from '../../pbweb/BasicTypes_pb'
-import genesis from '../config/genesis.json'
 import HederaNode from '../hederanode'
 
 const ed25519 = forge.pki.ed25519
@@ -10,7 +9,16 @@ interface IStringBufferMap {
     [s: string]: Buffer
 }
 
-test('Hedera', () => {
+test('Hedera', async () => {
+    exitIfNotNode()
+
+    const genesis = await getGenesisKeys()
+    if (genesis === undefined) {
+        // No genesis account and keys were defined in environment variable,
+        // so we exit. This test will not run.
+        return
+    }
+
     // instantiate an example account
     const nodeAccountID = new AccountID()
     nodeAccountID.setAccountnum(3)
@@ -210,4 +218,47 @@ const privateKeyValidator = {
             capture: 'privateKey'
         }
     ]
+}
+
+// nodejs or web, returns true if we are in nodejs environment
+const isNode = () => {
+    let node = false
+    if (typeof process === 'object') {
+        if (typeof process.versions === 'object') {
+            if (typeof process.versions.node !== 'undefined') {
+                node = true
+            }
+        }
+    }
+    return node
+}
+
+const exitIfNotNode = () => {
+    if (isNode() === false) {
+        return
+    }
+}
+
+const getGenesisKeys = async () => {
+    if (isNode() === false) {
+        return undefined
+    }
+
+    if (
+        process.env.GENESIS_ACCOUNT_ID !== undefined &&
+        process.env.GENESIS_PRIVATE_KEY &&
+        process.env.GENESIS_PUBLIC_KEY &&
+        process.env.GENESIS_ASN1
+    ) {
+        const asn1 =
+            process.env.GENESIS_ASN1.toLowerCase() === 'true' ? true : false
+        return {
+            account: process.env.GENESIS_ACCOUNT_ID,
+            asn1,
+            privKey: process.env.GENESIS_PRIVATE_KEY,
+            pubKey: process.env.GENESIS_PUBLIC_KEY
+        }
+    } else {
+        return undefined
+    }
 }
