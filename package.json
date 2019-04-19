@@ -56,14 +56,10 @@
     "pbweb/**/*"
   ],
   "dependencies": {
-    "@types/asn1js": "0.0.1",
     "@types/node-forge": "^0.8.2",
-    "@types/supertest": "^2.0.7",
-    "asn1js": "^2.0.22",
     "grpc-web": "^1.0.4",
     "nano-seconds": "^1.2.2",
     "node-forge": "^0.8.2",
-    "protobufjs": "^6.8.8",
-    "supertest": "^4.0.2"
+    "protobufjs": "^6.8.8"
   }
 }
