@@ -1,7 +1,8 @@
-import { ASN1, BitString, Class, Tag } from '@fidm/asn1'
+
 import forge from 'node-forge'
 import { HederaAccount, HederaBuilder } from '..'
 import { AccountID } from '../../pbweb/BasicTypes_pb'
+import asn1parser from '../crypto/asn1parser'
 import HederaNode from '../hederanode'
 
 const ed25519 = forge.pki.ed25519
@@ -43,7 +44,7 @@ test('Hedera', async () => {
         const privKeyNativeBuffer = Buffer.from(privKeyBytes, encoding)
         const pubKeyNativeBuffer = Buffer.from(pubKeyBytes, encoding)
         // parse out our ed25519 keys that are encoded in ASN1 DER
-        keys = parseASN1Keys(privKeyNativeBuffer, pubKeyNativeBuffer)
+        keys = asn1parser(privKeyNativeBuffer, pubKeyNativeBuffer)
         // our retrieved ed25519 private key from ASN1 DER is 32 bytes length
         // In the context of node-forge, this parsed out private key is in fact the seed
         const keypairGen = ed25519.generateKeyPair({ seed: keys.privKeyBuffer })
@@ -109,116 +110,6 @@ test('Hedera', async () => {
     expect(hedera!.operator.getAccountID()).toBe(payingAccount.getAccountID())
     expect(hedera!.operator.getKeyPair()).toBe(payingAccount.getKeyPair())
 })
-
-const parseASN1Keys = (privNativeBuffer: Buffer, pubNativeBuffer: Buffer) => {
-    const captures = ASN1.parseDERWithTemplate(
-        privNativeBuffer,
-        privateKeyValidator
-    )
-    const capturesLen = captures.privateKey.value.length as number
-    if (capturesLen !== 34) {
-        throw new Error(
-            `We expect the captured ed25519 private key to have an additional 2 \
-            bytes 0x04 prepended, so length is 32 + 2 (34), but our length is ${capturesLen}`
-        )
-    }
-    let privKeyBuffer = captures.privateKey.value as Buffer
-    privKeyBuffer = privKeyBuffer.slice(2)
-    if (privKeyBuffer.byteLength !== 32) {
-        throw new Error(`We expect our actual ed25519 private key buffer to be 32 bytes \
-        but your private key buffer byte length is ${privKeyBuffer.byteLength}`)
-    }
-    // public key
-    const pubCaptures = ASN1.parseDERWithTemplate(
-        pubNativeBuffer,
-        publicKeyValidator
-    )
-    const pubKeyBitString = pubCaptures.publicKey.value as BitString
-    const pubKeyBuffer = pubKeyBitString.buf
-    if (pubKeyBuffer.length !== 32) {
-        throw new Error(`We expect our ed25519 public key buffer to be 32 bytes \
-        but your public key buffer byte length is ${pubKeyBuffer.length}`)
-    }
-
-    return {
-        privKeyBuffer,
-        pubKeyBuffer
-    }
-}
-
-const publicKeyValidator = {
-    name: 'SubjectPublicKeyInfo',
-    // tslint:disable-next-line:object-literal-sort-keys
-    class: Class.UNIVERSAL,
-    tag: Tag.SEQUENCE,
-    // tslint:disable-next-line:object-literal-sort-keys
-    capture: 'subjectPublicKeyInfo',
-    value: [
-        {
-            name: 'SubjectPublicKeyInfo.AlgorithmIdentifier',
-            // tslint:disable-next-line:object-literal-sort-keys
-            class: Class.UNIVERSAL,
-            tag: Tag.SEQUENCE,
-            value: [
-                {
-                    name: 'AlgorithmIdentifier.algorithm',
-                    // tslint:disable-next-line:object-literal-sort-keys
-                    class: Class.UNIVERSAL,
-                    tag: Tag.OID,
-                    // tslint:disable-next-line:object-literal-sort-keys
-                    capture: 'publicKeyOID'
-                }
-            ]
-        },
-        {
-            // subjectPublicKey
-            name: 'SubjectPublicKeyInfo.subjectPublicKey',
-            // tslint:disable-next-line:object-literal-sort-keys
-            class: Class.UNIVERSAL,
-            tag: Tag.BITSTRING,
-            capture: 'publicKey'
-        }
-    ]
-}
-
-const privateKeyValidator = {
-    name: 'PrivateKeyInfo',
-    // tslint:disable-next-line:object-literal-sort-keys
-    class: Class.UNIVERSAL,
-    tag: Tag.SEQUENCE,
-    capture: 'privateKeyInfo',
-    value: [
-        {
-            name: 'PrivateKeyInfo.Version',
-            // tslint:disable-next-line:object-literal-sort-keys
-            class: Class.UNIVERSAL,
-            tag: Tag.INTEGER,
-            capture: 'privateKeyVersion'
-        },
-        {
-            name: 'PrivateKeyInfo.AlgorithmIdentifier',
-            // tslint:disable-next-line:object-literal-sort-keys
-            class: Class.UNIVERSAL,
-            tag: Tag.SEQUENCE,
-            value: [
-                {
-                    name: 'PrivateKeyAlgorithmIdentifier.algorithm',
-                    // tslint:disable-next-line:object-literal-sort-keys
-                    class: Class.UNIVERSAL,
-                    tag: Tag.OID,
-                    capture: 'privateKeyOID'
-                }
-            ]
-        },
-        {
-            name: 'PrivateKeyInfo.PrivateKey',
-            // tslint:disable-next-line:object-literal-sort-keys
-            class: Class.UNIVERSAL,
-            tag: Tag.OCTETSTRING,
-            capture: 'privateKey'
-        }
-    ]
-}
 
 // nodejs or web, returns true if we are in nodejs environment
 const isNode = () => {
