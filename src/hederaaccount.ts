@@ -35,7 +35,12 @@ class HederaAccount {
         const publicKeyHex = forge.util.bytesToHex(publicKeyBuffer.data)
         const privateKeyBuffer = forge.util.createBuffer(kp.privateKey)
         const privateKeyHex = forge.util.bytesToHex(privateKeyBuffer.data)
-        const keypair = new KeyPair(publicKeyHex, privateKeyHex, false, seedBuffer)
+        const keypair = new KeyPair(
+            publicKeyHex,
+            privateKeyHex,
+            false,
+            seedBuffer
+        )
         return new HederaAccount(undefined, keypair)
     }
 

@@ -77,7 +77,7 @@ const accountIDFromString = (account: string): AccountID => {
     return accountID
 }
 
-const accountIDAsString = (accountID: AccountID) : string => {
+const accountIDAsString = (accountID: AccountID): string => {
     const shardNum = accountID.getShardnum().toString()
     const realmNum = accountID.getRealmnum().toString()
     const accountNum = accountID.getAccountnum().toString()

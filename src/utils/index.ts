@@ -17,12 +17,15 @@ const exitIfNotNode = () => {
     }
 }
 
-const getGenesisKeys = async () : Promise<{
-  account: string;
-  asn1: boolean;
-  privKey: string;
-  pubKey: string;
-} | undefined> => {
+const getGenesisKeys = async (): Promise<
+    | {
+          account: string
+          asn1: boolean
+          privKey: string
+          pubKey: string
+      }
+    | undefined
+> => {
     if (isNode() === false) {
         return undefined
     }
