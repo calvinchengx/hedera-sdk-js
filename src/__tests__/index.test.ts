@@ -1,6 +1,6 @@
 import { ASN1, BitString, Class, Tag } from '@fidm/asn1'
 import forge from 'node-forge'
-import { Hedera, HederaAccount, HederaBuilder } from '..'
+import { HederaAccount, HederaBuilder } from '..'
 import { AccountID } from '../../pbweb/BasicTypes_pb'
 import genesis from '../config/genesis.json'
 import HederaNode from '../hederanode'
@@ -46,11 +46,13 @@ test('Hedera', () => {
         const message = 'hello'
         const signature = ed25519.sign({
             message,
+            // tslint:disable-next-line:object-literal-sort-keys
             encoding,
             privateKey: privateKeyNativeBuffer
         })
         const verify = ed25519.verify({
             message,
+            // tslint:disable-next-line:object-literal-sort-keys
             encoding,
             signature,
             publicKey: publicKeyNativeBuffer
@@ -93,12 +95,11 @@ test('Hedera', () => {
         .cryptoCreate(publicKey, initialBalance)
         .sign()
 
-    // console.log(hedera)
-    // expect(hedera!.node.getAccountID().getRealmnum()).toBe(0)
-    // expect(hedera!.node.getAccountID().getShardnum()).toBe(0)
-    // expect(hedera!.node.getAccountID().getAccountnum()).toBe(3)
-    // expect(hedera!.operator.getAccountID()).toBe(payingAccount.getAccountID())
-    // expect(hedera!.operator.getKeyPair()).toBe(payingAccount.getKeyPair())
+    expect(hedera!.node.getAccountID().getRealmnum()).toBe(0)
+    expect(hedera!.node.getAccountID().getShardnum()).toBe(0)
+    expect(hedera!.node.getAccountID().getAccountnum()).toBe(3)
+    expect(hedera!.operator.getAccountID()).toBe(payingAccount.getAccountID())
+    expect(hedera!.operator.getKeyPair()).toBe(payingAccount.getKeyPair())
 })
 
 const parseASN1Keys = (privNativeBuffer: Buffer, pubNativeBuffer: Buffer) => {
