@@ -6,17 +6,27 @@ import KeyPair from './keypair'
 const ed25519 = forge.pki.ed25519
 
 class HederaAccount {
+    /**
+     * Initialise a new account by providing
+     * @param {string} accountIDString - accountID string delimited by ".", e.g. shardNumn.realmNum.accountNum
+     * @param {string} publicKeyHex - a public key hex-encoded string (ed25519)
+     * @param {string} privateKeyHex - a private key hex-encoded string (ed25519)
+     * @param {boolean} asn1 - defaults to false. Set to true if we are initialising this account with keys that are ASN.1 DER-encoded.
+     */
     public static initWith(
         accountIDString: string,
         publicKeyHex: string,
-        privateKeyHex: string
+        privateKeyHex: string,
+        asn1: boolean = false
     ) {
         const accountID = i.accountIDFromString(accountIDString)
-        const keypair = new KeyPair(publicKeyHex, privateKeyHex)
+        const keypair = new KeyPair(publicKeyHex, privateKeyHex, asn1)
         return new HederaAccount(accountID, keypair)
     }
 
-    // Generate ed25519 keypair and initialise new account
+    /**
+     * Initialise a new account with a randomly generated ed25519 keypair
+     */
     public static init() {
         const seed = forge.random.getBytesSync(32)
         const kp = ed25519.generateKeyPair({ seed })
@@ -58,7 +68,7 @@ class HederaAccount {
 
     public setKeyPairWithHexString(
         publicKeyHex: string,
-        privateKeyHex?: string
+        privateKeyHex: string
     ) {
         this.keypair = new KeyPair(publicKeyHex, privateKeyHex)
     }
