@@ -27,8 +27,8 @@ test('Hedera', () => {
     let pubKeyHex = genesis.pubKey
     // console.log(privKeyHex.length) // 96, indicative that our key is ASN.1 DER-encoded
     // console.log(pubKeyHex.length)  // 88, indicative that our key is ASN.1 DER-encoded
-    
-    let keys : IStringBufferMap
+
+    let keys: IStringBufferMap
     if (genesis.asn1 === true) {
         const privKeyBytes = forge.util.hexToBytes(genesis.privKey)
         const pubKeyBytes = forge.util.hexToBytes(genesis.pubKey)
@@ -36,7 +36,7 @@ test('Hedera', () => {
         const pubKeyNativeBuffer = Buffer.from(pubKeyBytes, encoding)
         // parse out our ed25519 keys that are encoded in ASN1 DER
         keys = parseASN1Keys(privKeyNativeBuffer, pubKeyNativeBuffer)
-        // our retrieved ed25519 private key from ASN1 DER is 32 bytes length 
+        // our retrieved ed25519 private key from ASN1 DER is 32 bytes length
         // In the context of node-forge, this parsed out private key is in fact the seed
         const keypairGen = ed25519.generateKeyPair({ seed: keys.privKeyBuffer })
         // Now, we have node-forge compliant privateKey and publicKey
@@ -44,25 +44,44 @@ test('Hedera', () => {
         const publicKeyNativeBuffer = keypairGen.publicKey
         // Sanity check using node-forge functions
         const message = 'hello'
-        const signature = ed25519.sign({ message, encoding, privateKey: privateKeyNativeBuffer })
-        const verify = ed25519.verify({ message, encoding, signature, publicKey: publicKeyNativeBuffer })
+        const signature = ed25519.sign({
+            message,
+            encoding,
+            privateKey: privateKeyNativeBuffer
+        })
+        const verify = ed25519.verify({
+            message,
+            encoding,
+            signature,
+            publicKey: publicKeyNativeBuffer
+        })
         expect(verify).toBe(true)
-        // We can also be re-assured that 
+        // We can also be re-assured that
         // the parsed out public key is exactly equal to the node-forge-format public key
         expect(keys.pubKeyBuffer).toEqual(publicKeyNativeBuffer)
 
-        // now that we have node-forge compliant privateKey and publicKey, 
+        // now that we have node-forge compliant privateKey and publicKey,
         // we can standardize its usage
 
         // converting NativeBuffer into bytes
-        const privateKeyBytes = forge.util.createBuffer(privateKeyNativeBuffer, 'raw')
-        const publicKeyBytes = forge.util.createBuffer(publicKeyNativeBuffer, 'raw')
+        const privateKeyBytes = forge.util.createBuffer(
+            privateKeyNativeBuffer,
+            'raw'
+        )
+        const publicKeyBytes = forge.util.createBuffer(
+            publicKeyNativeBuffer,
+            'raw'
+        )
         // converting bytes into hex-string
         privKeyHex = forge.util.bytesToHex(privateKeyBytes.getBytes())
         pubKeyHex = forge.util.bytesToHex(publicKeyBytes.getBytes())
     }
 
-    const payingAccount = HederaAccount.initWith(genesis.account, pubKeyHex, privKeyHex)
+    const payingAccount = HederaAccount.initWith(
+        genesis.account,
+        pubKeyHex,
+        privKeyHex
+    )
 
     const newAccount = HederaAccount.init()
     const keypair = newAccount.getKeyPair()
@@ -70,9 +89,9 @@ test('Hedera', () => {
     const initialBalance = 10000
 
     const hedera = new HederaBuilder(node)
-                    .withOperator(payingAccount)
-                    .cryptoCreate(publicKey, initialBalance)
-                    .sign()
+        .withOperator(payingAccount)
+        .cryptoCreate(publicKey, initialBalance)
+        .sign()
 
     // console.log(hedera)
     // expect(hedera!.node.getAccountID().getRealmnum()).toBe(0)

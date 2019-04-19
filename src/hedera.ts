@@ -1,7 +1,7 @@
 import grpc from 'grpc'
 import { Query } from '../pbweb/Query_pb'
 import { Transaction, TransactionBody } from '../pbweb/Transaction_pb'
-import { TransactionResponse } from '../pbweb/TransactionResponse_pb';
+import { TransactionResponse } from '../pbweb/TransactionResponse_pb'
 import ClientNode from './clientnode'
 import ClientWeb from './clientweb'
 import HederaAccount from './hederaaccount'
@@ -11,8 +11,8 @@ import { HederaBuilder } from './index'
 type TxCase = TransactionBody.DataCase | undefined
 type QCase = Query.QueryCase | undefined
 enum Mode {
-  Web = 1,
-  Node
+    Web = 1,
+    Node
 }
 
 class Hedera {
@@ -57,22 +57,28 @@ class Hedera {
 
     private handleTransaction(mode: Mode) {
         switch (this.txCase) {
-          case TransactionBody.DataCase.CRYPTOCREATEACCOUNT:
-            this.clientNode.crypto.createAccount(this.tx, (err: grpc.ServiceError | null, res: TransactionResponse) => {
-              // console.log(err)
-              // console.log(res)
-            })
-          case TransactionBody.DataCase.CRYPTOTRANSFER:
-          case TransactionBody.DataCase.CONTRACTCALL:
-          default:
+            case TransactionBody.DataCase.CRYPTOCREATEACCOUNT:
+                this.clientNode.crypto.createAccount(
+                    this.tx,
+                    (
+                        err: grpc.ServiceError | null,
+                        res: TransactionResponse
+                    ) => {
+                        // console.log(err)
+                        // console.log(res)
+                    }
+                )
+            case TransactionBody.DataCase.CRYPTOTRANSFER:
+            case TransactionBody.DataCase.CONTRACTCALL:
+            default:
         }
     }
 
     private handleQuery(mode: Mode) {
         switch (this.qCase) {
-          case Query.QueryCase.CRYPTOGETACCOUNTBALANCE:
-          case Query.QueryCase.TRANSACTIONGETRECEIPT:
-          default:
+            case Query.QueryCase.CRYPTOGETACCOUNTBALANCE:
+            case Query.QueryCase.TRANSACTIONGETRECEIPT:
+            default:
         }
     }
 }

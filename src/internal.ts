@@ -1,8 +1,8 @@
 import nano from 'nano-seconds'
 import * as forge from 'node-forge'
 import { AccountID, Signature } from '../pbweb/BasicTypes_pb'
-import { Duration } from '../pbweb/Duration_pb';
-import { Timestamp } from '../pbweb/Timestamp_pb';
+import { Duration } from '../pbweb/Duration_pb'
+import { Timestamp } from '../pbweb/Timestamp_pb'
 
 const ed25519 = forge.pki.ed25519
 
@@ -10,12 +10,12 @@ const ed25519 = forge.pki.ed25519
 //     if (!str) {
 //       return new Uint8Array();
 //     }
-    
+
 //     const a = [];
 //     for (let i = 0, len = str.length; i < len; i+=2) {
 //       a.push(parseInt(str.substr(i,2),16));
 //     }
-    
+
 //     return new Uint8Array(a);
 //   }
 
@@ -34,7 +34,10 @@ function signWithKeyAndVerify(
     publicKeyHex: string
 ): Sig {
     const encoding = 'binary'
-    const privateKey = Buffer.from(forge.util.hexToBytes(privateKeyHex), encoding)
+    const privateKey = Buffer.from(
+        forge.util.hexToBytes(privateKeyHex),
+        encoding
+    )
     const publicKey = Buffer.from(forge.util.hexToBytes(publicKeyHex), encoding)
 
     const signature = ed25519.sign({
@@ -106,7 +109,7 @@ function getTimestamp() {
     ts.setSeconds(seconds)
     ts.setNanos(nanosecond)
     return ts
-} 
+}
 
 function getFee() {
     return 100000

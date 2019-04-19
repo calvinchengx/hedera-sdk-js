@@ -1,17 +1,16 @@
 import forge from 'node-forge'
-import { Key } from '../pbweb/BasicTypes_pb';
+import { Key } from '../pbweb/BasicTypes_pb'
 
 class KeyPair {
     private publicKeyHex: string
     private privateKeyHex: string
 
     constructor(publicKeyHex: string = '', privateKeyHex: string = '') {
-        
         this.publicKeyHex = publicKeyHex
         this.privateKeyHex = privateKeyHex
     }
 
-    public getPublicKey() : Key {
+    public getPublicKey(): Key {
         const publicKeyBytes = forge.util.hexToBytes(this.publicKeyHex)
         const publicKeyNativeBuffer = Buffer.from(publicKeyBytes, 'binary')
         const publicKey = new Key()
@@ -19,11 +18,11 @@ class KeyPair {
         return publicKey
     }
 
-    public getPublicKeyHex() : string {
+    public getPublicKeyHex(): string {
         return this.publicKeyHex
     }
 
-    public getPrivateKey() : Key {
+    public getPrivateKey(): Key {
         const privateKeyBytes = forge.util.hexToBytes(this.privateKeyHex)
         const privateKeyNativeBuffer = Buffer.from(privateKeyBytes, 'binary')
         const privateKey = new Key()
@@ -31,7 +30,7 @@ class KeyPair {
         return privateKey
     }
 
-    public getPrivateKeyHex() : string {
+    public getPrivateKeyHex(): string {
         return this.privateKeyHex
     }
 }

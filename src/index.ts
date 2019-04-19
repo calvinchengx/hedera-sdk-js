@@ -1,11 +1,11 @@
-import * as jspb from "google-protobuf"
+import * as jspb from 'google-protobuf'
 import grpc from 'grpc'
 import { Key, Signature, TransactionID } from '../pbweb/BasicTypes_pb'
-import { SignatureList } from "../pbweb/BasicTypes_pb";
-import { CryptoCreateTransactionBody } from "../pbweb/CryptoCreate_pb";
-import { Duration } from "../pbweb/Duration_pb";
-import { Query } from "../pbweb/Query_pb";
-import { Transaction, TransactionBody } from "../pbweb/Transaction_pb";
+import { SignatureList } from '../pbweb/BasicTypes_pb'
+import { CryptoCreateTransactionBody } from '../pbweb/CryptoCreate_pb'
+import { Duration } from '../pbweb/Duration_pb'
+import { Query } from '../pbweb/Query_pb'
+import { Transaction, TransactionBody } from '../pbweb/Transaction_pb'
 import ClientNode from './clientnode'
 import ClientWeb from './clientweb'
 import cryptoCreate from './cryptocreate'
@@ -25,7 +25,7 @@ class HederaBuilder {
     public operator?: HederaAccount // operator refers to the account that pays for transactions and querys
 
     // for transactions
-    private memo: string = ""
+    private memo: string = ''
     private body?: CryptoCreateTransactionBody
     private txCase?: TxCase
     private tx?: Transaction
@@ -51,7 +51,11 @@ class HederaBuilder {
         return this
     }
 
-    public cryptoCreate(publicKey: Key, initialBalance: number, duration: Duration = i.getDuration()) {
+    public cryptoCreate(
+        publicKey: Key,
+        initialBalance: number,
+        duration: Duration = i.getDuration()
+    ) {
         const body = cryptoCreate(publicKey, initialBalance, duration)
         this.body = body
         this.txCase = TransactionBody.DataCase.CRYPTOCREATEACCOUNT
@@ -65,10 +69,14 @@ class HederaBuilder {
 
     public sign() {
         if (this.operator === undefined) {
-            throw new Error('Please specify an operator, i.e. a paying account, using withOperator method')
+            throw new Error(
+                'Please specify an operator, i.e. a paying account, using withOperator method'
+            )
         }
         if (this.txCase === undefined && this.qCase === undefined) {
-            throw new Error('Please invoke either a transaction method or query method before signing')
+            throw new Error(
+                'Please invoke either a transaction method or query method before signing'
+            )
         }
         // sign a transaction
         if (this.txCase !== undefined) {
@@ -87,23 +95,31 @@ class HederaBuilder {
 
                     // sign
                     const txBodyBytes = txBody.serializeBinary().toString()
-                    const privateKeyHex = this.operator.getKeyPair()!.getPrivateKeyHex()
-                    const publicKeyHex = this.operator.getKeyPair()!.getPublicKeyHex()
-                    const sig = i.signWithKeyAndVerify(txBodyBytes, privateKeyHex, publicKeyHex) as Signature
+                    const privateKeyHex = this.operator
+                        .getKeyPair()!
+                        .getPrivateKeyHex()
+                    const publicKeyHex = this.operator
+                        .getKeyPair()!
+                        .getPublicKeyHex()
+                    const sig = i.signWithKeyAndVerify(
+                        txBodyBytes,
+                        privateKeyHex,
+                        publicKeyHex
+                    ) as Signature
 
-                    // const sigList = new SignatureList()
-                    // sigList.setSigsList([sig, sig])
+                // const sigList = new SignatureList()
+                // sigList.setSigsList([sig, sig])
 
-                    // const tx = new Transaction()
-                    // tx.setBody(txBody)
-                    // tx.setSigs(sigList)
-                    // this.tx = tx
+                // const tx = new Transaction()
+                // tx.setBody(txBody)
+                // tx.setSigs(sigList)
+                // this.tx = tx
                 case TransactionBody.DataCase.CRYPTOTRANSFER:
-                    // TODO
+                // TODO
                 case TransactionBody.DataCase.CONTRACTCALL:
-                    // TODO
+                // TODO
                 default:
-                    // do nothing
+                // do nothing
             }
             return new Hedera(this)
         }
@@ -113,15 +129,15 @@ class HederaBuilder {
         }
     }
 
-    public getTxCase() : TxCase | undefined {
+    public getTxCase(): TxCase | undefined {
         return this.txCase
     }
 
-    public getTx() : Transaction | undefined {
+    public getTx(): Transaction | undefined {
         return this.tx
     }
 
-    public getQCase() : QCase | undefined {
+    public getQCase(): QCase | undefined {
         return this.qCase
     }
 
