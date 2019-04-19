@@ -8,5 +8,10 @@
     "ts-jest": {
       "tsConfig": "tsconfig.json"
     }
-  }
+  },
+  "collectCoverageFrom": [
+    "**/src/**/*",
+    "!**/node_modules/**",
+    "!**/src/addressbook/**"
+  ]
 }

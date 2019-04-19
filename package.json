@@ -6,7 +6,7 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "test": "jest --config jestconfig.json",
-    "test:cov": "jest --config jestconfig.json  --collectCoverage=true --collectCoverageFrom=**/src/**/*",
+    "test:cov": "npm run test --collectCoverage=true",
     "test:cov:report": "npm run test:cov && codecov --token=${CODECOV_TOKEN}",
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
