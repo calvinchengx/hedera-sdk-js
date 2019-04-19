@@ -52,7 +52,8 @@
   },
   "files": [
     "lib/**/*",
-    "hedera-grpc/**/*"
+    "pbnode/**/*",
+    "pbweb/**/*"
   ],
   "dependencies": {
     "@types/asn1js": "0.0.1",
