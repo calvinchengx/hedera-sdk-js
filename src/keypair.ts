@@ -5,14 +5,21 @@ import asn1parser from './crypto/asn1parser'
 const ed25519 = forge.pki.ed25519
 
 class KeyPair {
-
     private publicKeyHex: string
     private privateKeyHex: string
     private seed?: Buffer
 
-    constructor(publicKeyHex: string, privateKeyHex: string, asn1: boolean = false) {
+    constructor(
+        publicKeyHex: string,
+        privateKeyHex: string,
+        asn1: boolean = false
+    ) {
         if (asn1 === true) {
-            const { privateKeyHexForge, publicKeyHexForge, seedForge } = handleASN1(privateKeyHex, publicKeyHex)
+            const {
+                privateKeyHexForge,
+                publicKeyHexForge,
+                seedForge
+            } = handleASN1(privateKeyHex, publicKeyHex)
             this.publicKeyHex = publicKeyHexForge
             this.privateKeyHex = privateKeyHexForge
             this.seed = seedForge
@@ -49,12 +56,11 @@ class KeyPair {
     public getSeed(): Buffer | undefined {
         return this.seed
     }
-
 }
 
 /**
  * Handles ASN.1 DER-encoded hex string keypair, converting it into node-forge-compliant keypair
- * @param {string} privateKeyHex - ASN.1 DER-encoded hex string private key 
+ * @param {string} privateKeyHex - ASN.1 DER-encoded hex string private key
  * @param {string} publicKeyHex - ASN.1 DER-encoded hex string public key
  */
 const handleASN1 = (privateKeyHex: string, publicKeyHex: string) => {

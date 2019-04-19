@@ -1,4 +1,3 @@
-
 import { HederaAccount, HederaBuilder } from '..'
 import { AccountID } from '../../pbweb/BasicTypes_pb'
 import HederaNode from '../hederanode'
@@ -48,5 +47,3 @@ test('Hedera', async () => {
     expect(hedera!.operator.getAccountID()).toBe(payingAccount.getAccountID())
     expect(hedera!.operator.getKeyPair()).toBe(payingAccount.getKeyPair())
 })
-
-
