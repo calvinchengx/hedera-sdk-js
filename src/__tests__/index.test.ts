@@ -1,7 +1,12 @@
-import { HederaAccount, HederaBuilder } from '..'
+import grpc from 'grpc'
+import { Hedera, HederaAccount, HederaBuilder } from '..'
+import { CryptoServiceClient } from '../../pbnode/CryptoService_grpc_pb';
+import { Transaction as TransactionNode } from '../../pbnode/Transaction_pb';
 import { Key } from '../../pbweb/BasicTypes_pb'
 import HederaNode from '../hederanode'
 import { exitIfNotNode, getGenesisKeys } from '../utils'
+import { TransactionResponse } from '../../pbnode/TransactionResponse_pb';
+import { ResponseCodeEnum } from '../../pbnode/ResponseCode_pb';
 
 let genesis:
     | {
@@ -21,6 +26,8 @@ let publicKey: Key
 let initialBalance: number
 
 let newAccount: HederaAccount
+
+let hedera: Hedera
 
 // set up
 beforeAll(async () => {
@@ -45,6 +52,14 @@ beforeAll(async () => {
     newAccount = HederaAccount.init()
     publicKey = newAccount.getKeyPair()!.getPublicKey()
     initialBalance = 10000
+        // instantiate a Hedera client which connects to Hedera network
+    // via the given node,
+    // with the given payingAccount,
+    // which pays and signs for transactions/queries
+    hedera = new HederaBuilder(node)
+        .withOperator(payingAccount)
+        .cryptoCreate(publicKey, initialBalance)
+        .sign()
 })
 
 test('HederaAccount payingAccount has correct values', () => {
@@ -94,18 +109,50 @@ test('Hedera client has correct values', async () => {
     if (genesis === undefined) {
         return
     }
-    // instantiate a Hedera client which connects to Hedera network
-    // via the given node,
-    // with the given payingAccount,
-    // which pays and signs for transactions/queries
-    const hedera = new HederaBuilder(node)
-        .withOperator(payingAccount)
-        .cryptoCreate(publicKey, initialBalance)
-        .sign()
 
-    expect(hedera!.node.getAccountID().getRealmnum()).toBe(0)
-    expect(hedera!.node.getAccountID().getShardnum()).toBe(0)
-    expect(hedera!.node.getAccountID().getAccountnum()).toBe(3)
-    expect(hedera!.operator.getAccountID()).toBe(payingAccount.getAccountID())
-    expect(hedera!.operator.getKeyPair()).toBe(payingAccount.getKeyPair())
+    const operator = hedera!.operator
+
+    expect(node.getAccountID().getRealmnum()).toBe(0)
+    expect(node.getAccountID().getShardnum()).toBe(0)
+    expect(node.getAccountID().getAccountnum()).toBe(3)
+    expect(operator.getAccountID()).toBe(payingAccount.getAccountID())
+    expect(operator.getKeyPair()).toBe(payingAccount.getKeyPair())
 })
+
+test('Hedera client sends the cryptoCreate transaction', async () => {
+    if (genesis === undefined) {
+        return
+    }
+    const tx = TransactionNode.deserializeBinary(hedera.tx!)
+    // const address = node.getHostname()
+    const address = 'testnet.hedera.com:50003'
+    console.log('gRPC call to', address)
+    const result = await cryptoCreatePromise(address, tx)
+    console.log(result)
+
+    const txResponse = result.response as TransactionResponse
+    console.log('response code', txResponse.getNodetransactionprecheckcode())
+    txResponse.getExtension()
+
+})
+
+
+async function cryptoCreatePromise(address: string, tx: TransactionNode): Promise<{
+    error: grpc.ServiceError | null;
+    response: TransactionResponse;
+}> {
+    const client = new CryptoServiceClient(
+        address,
+        grpc.credentials.createInsecure()
+    )
+    return new Promise((resolve, reject) => {
+        client.createAccount(tx, (error: grpc.ServiceError | null, response: TransactionResponse) => {
+            const result = { error, response }
+            if (error) {
+                reject(result)
+            } else {
+                resolve(result)
+            }
+        })
+    })
+}

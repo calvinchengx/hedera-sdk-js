@@ -28,7 +28,7 @@ class HederaBuilder {
     private memo: string = ''
     private body?: CryptoCreateTransactionBody
     private txCase?: TxCase
-    private tx?: Transaction
+    private tx?: Uint8Array
 
     // for queries
     private qCase?: QCase
@@ -46,7 +46,7 @@ class HederaBuilder {
         this.node = node
     }
 
-    public withOperator(hederaAccount: HederaAccount) {
+    public withOperator(hederaAccount: HederaAccount): HederaBuilder {
         this.operator = hederaAccount
         return this
     }
@@ -55,19 +55,19 @@ class HederaBuilder {
         publicKey: Key,
         initialBalance: number,
         duration: Duration = i.getDuration()
-    ) {
+    ): HederaBuilder {
         const body = cryptoCreate(publicKey, initialBalance, duration)
         this.body = body
         this.txCase = TransactionBody.DataCase.CRYPTOCREATEACCOUNT
         return this
     }
 
-    public withMemo(memo: string) {
+    public withMemo(memo: string): HederaBuilder {
         this.memo = memo
         return this
     }
 
-    public sign() {
+    public sign(): Hedera {
         if (this.operator === undefined) {
             throw new Error(
                 'Please specify an operator, i.e. a paying account, using withOperator method'
@@ -107,13 +107,13 @@ class HederaBuilder {
                         publicKeyHex
                     ) as Signature
 
-                // const sigList = new SignatureList()
-                // sigList.setSigsList([sig, sig])
+                const sigList = new SignatureList()
+                sigList.setSigsList([sig, sig])
 
-                // const tx = new Transaction()
-                // tx.setBody(txBody)
-                // tx.setSigs(sigList)
-                // this.tx = tx
+                const tx = new Transaction()
+                tx.setBody(txBody)
+                tx.setSigs(sigList)
+                this.tx = tx.serializeBinary()
                 case TransactionBody.DataCase.CRYPTOTRANSFER:
                 // TODO
                 case TransactionBody.DataCase.CONTRACTCALL:
@@ -127,13 +127,14 @@ class HederaBuilder {
         if (this.qCase !== undefined) {
             return new Hedera(this)
         }
+        throw new Error('Failed to sign')
     }
 
     public getTxCase(): TxCase | undefined {
         return this.txCase
     }
 
-    public getTx(): Transaction | undefined {
+    public getTx(): Uint8Array | undefined {
         return this.tx
     }
 

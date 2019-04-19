@@ -12,6 +12,7 @@ import {
 } from '../pbweb/SmartContractService_grpc_web_pb'
 
 class ClientWeb {
+
     public crypto: CryptoServiceClient
     public cryptoAsync: CryptoServicePromiseClient
 

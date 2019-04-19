@@ -4,6 +4,7 @@ import { FileServiceClient } from '../pbnode/FileService_grpc_pb'
 import { SmartContractServiceClient } from '../pbnode/SmartContractService_grpc_pb'
 
 class ClientNode {
+
     public crypto: any
     public file: any
     public contract: any

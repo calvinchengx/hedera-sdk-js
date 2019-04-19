@@ -1,4 +1,5 @@
 import grpc from 'grpc'
+import { Transaction as TransactionNode } from '../pbnode/Transaction_pb'
 import { Query } from '../pbweb/Query_pb'
 import { Transaction, TransactionBody } from '../pbweb/Transaction_pb'
 import { TransactionResponse } from '../pbweb/TransactionResponse_pb'
@@ -10,10 +11,6 @@ import { HederaBuilder } from './index'
 
 type TxCase = TransactionBody.DataCase | undefined
 type QCase = Query.QueryCase | undefined
-enum Mode {
-    Web = 1,
-    Node
-}
 
 class Hedera {
     public static micropayment(doc: Document) {
@@ -27,9 +24,8 @@ class Hedera {
     public clientNode: ClientNode
     public node: HederaNode
     public operator: HederaAccount
-
-    private txCase?: TxCase
-    private tx?: Transaction
+    public tx?: Uint8Array
+    public txCase?: TxCase
 
     private qCase?: QCase
     private q?: Query
@@ -45,27 +41,42 @@ class Hedera {
         this.q = build.getQ()
     }
 
-    // by default, we make our gRPC call with grpc-node (2), not grpc-web (1)
-    public send(mode: Mode = Mode.Node) {
+    /**
+     * Send our gRPC call as grpc-node or grpc-web
+     * @param {string} mode - either 'web' or 'node'. 'node' by default
+     */
+    public async send(mode: string = 'node') {
+        if (this.txCase === undefined && this.qCase === undefined) {
+            throw new Error('No transaction or query method invoked')
+        }
         if (this.txCase !== undefined) {
-            this.handleTransaction(mode)
+            await this.handleTransaction(mode)
         }
         if (this.qCase !== undefined) {
-            this.handleQuery(mode)
+            await this.handleQuery(mode)
         }
     }
 
-    private handleTransaction(mode: Mode) {
+    private async handleTransaction(mode: string) {
+        // defaults to using clientNode
+        let client: ClientWeb | ClientNode = this.clientNode
+        let tx: Transaction | TransactionNode = TransactionNode.deserializeBinary(this.tx!)
+        if (mode === 'web') {
+            client = this.clientWeb 
+            tx = Transaction.deserializeBinary(this.tx!)
+        }
         switch (this.txCase) {
             case TransactionBody.DataCase.CRYPTOCREATEACCOUNT:
-                this.clientNode.crypto.createAccount(
-                    this.tx,
+                console.log('Crypto Create Account')
+                await client.crypto.createAccount(
+                    tx,
                     (
                         err: grpc.ServiceError | null,
                         res: TransactionResponse
                     ) => {
-                        // console.log(err)
-                        // console.log(res)
+                        console.log('Crypto Create Account callback')
+                        console.log(err)
+                        console.log(res)
                     }
                 )
             case TransactionBody.DataCase.CRYPTOTRANSFER:
@@ -74,13 +85,20 @@ class Hedera {
         }
     }
 
-    private handleQuery(mode: Mode) {
+    private async handleQuery(mode: string) {
+        // defaults to using clientNode
+        let client: ClientWeb | ClientNode = this.clientNode
+        if (mode === 'web') {
+            client = this.clientWeb
+        }
         switch (this.qCase) {
             case Query.QueryCase.CRYPTOGETACCOUNTBALANCE:
+                client.crypto.cryptoGetBalance()
             case Query.QueryCase.TRANSACTIONGETRECEIPT:
             default:
         }
     }
+
 }
 
 export default Hedera
