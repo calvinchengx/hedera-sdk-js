@@ -6,19 +6,6 @@ import { Timestamp } from '../pbweb/Timestamp_pb'
 
 const ed25519 = forge.pki.ed25519
 
-// function hexStringToByte(str: string) : Uint8Array {
-//     if (!str) {
-//       return new Uint8Array();
-//     }
-
-//     const a = [];
-//     for (let i = 0, len = str.length; i < len; i+=2) {
-//       a.push(parseInt(str.substr(i,2),16));
-//     }
-
-//     return new Uint8Array(a);
-//   }
-
 type Sig = Signature | undefined
 
 /**
@@ -64,7 +51,7 @@ function signWithKeyAndVerify(
  * @param {string} account is a string delimited by dot, of the format 'shardNum.realmNum.accountNum'.
  * @returns {Object} returns a Hedera AccountID.
  */
-function accountIDFromString(account: string): AccountID {
+const accountIDFromString = (account: string): AccountID => {
     const accountSplit = account.split('.')
     if (accountSplit.length !== 3) {
         throw new Error(
@@ -88,6 +75,13 @@ function accountIDFromString(account: string): AccountID {
     accountID.setRealmnum(parseInt(accountSplit[1], 10))
     accountID.setAccountnum(parseInt(accountSplit[2], 10))
     return accountID
+}
+
+const accountIDAsString = (accountID: AccountID) : string => {
+    const shardNum = accountID.getShardnum().toString()
+    const realmNum = accountID.getRealmnum().toString()
+    const accountNum = accountID.getAccountnum().toString()
+    return `${shardNum}.${realmNum}.${accountNum}`
 }
 
 /**
@@ -116,6 +110,7 @@ function getFee() {
 }
 
 export default {
+    accountIDAsString,
     accountIDFromString,
     getDuration,
     getFee,
