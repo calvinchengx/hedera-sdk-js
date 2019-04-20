@@ -142,7 +142,7 @@ test('Hedera client sends the cryptoCreate transaction', async (done) => {
         done()
     }
     c.createAccount(tx, callback)
-})
+}, 30000)
 
 
 async function cryptoCreatePromise(address: string, tx: TransactionNode): Promise<{
