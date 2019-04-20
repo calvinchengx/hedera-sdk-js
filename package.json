@@ -39,6 +39,7 @@
     "@types/jsdom": "^12.2.3",
     "@types/node": "^11.13.4",
     "codecov": "^3.3.0",
+    "commander": "^2.20.0",
     "google-protobuf": "^3.7.1",
     "grpc": "^1.18.0",
     "jest": "^24.7.1",
@@ -53,13 +54,19 @@
   "files": [
     "lib/**/*",
     "pbnode/**/*",
-    "pbweb/**/*"
+    "pbweb/**/*",
+    "bin/**/*"
   ],
   "dependencies": {
     "@types/node-forge": "^0.8.2",
     "grpc-web": "^1.0.4",
     "nano-seconds": "^1.2.2",
     "node-forge": "^0.8.2",
-    "protobufjs": "^6.8.8"
+    "protobufjs": "^6.8.8",
+    "ts-node": "^8.1.0",
+    "typed-promisify": "^0.4.0"
+  },
+  "bin": {
+    "hedera-proto": "./bin/hedera-proto.ts"
   }
 }

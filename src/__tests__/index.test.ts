@@ -1,12 +1,13 @@
 import grpc from 'grpc'
 import { Hedera, HederaAccount, HederaBuilder } from '..'
 import { CryptoServiceClient } from '../../pbnode/CryptoService_grpc_pb';
+import { ResponseCodeEnum } from '../../pbnode/ResponseCode_pb';
 import { Transaction as TransactionNode } from '../../pbnode/Transaction_pb';
+import { TransactionResponse } from '../../pbnode/TransactionResponse_pb';
 import { Key } from '../../pbweb/BasicTypes_pb'
+import { Transaction } from '../../pbweb/Transaction_pb';
 import HederaNode from '../hederanode'
 import { exitIfNotNode, getGenesisKeys } from '../utils'
-import { TransactionResponse } from '../../pbnode/TransactionResponse_pb';
-import { ResponseCodeEnum } from '../../pbnode/ResponseCode_pb';
 
 let genesis:
     | {
@@ -119,21 +120,28 @@ test('Hedera client has correct values', async () => {
     expect(operator.getKeyPair()).toBe(payingAccount.getKeyPair())
 })
 
-test('Hedera client sends the cryptoCreate transaction', async () => {
+test('Hedera client sends the cryptoCreate transaction', async (done) => {
     if (genesis === undefined) {
         return
     }
     const tx = TransactionNode.deserializeBinary(hedera.tx!)
     // const address = node.getHostname()
-    const address = 'testnet.hedera.com:50003'
+    const address = 'testnet.hedera.com:50006'
     console.log('gRPC call to', address)
-    const result = await cryptoCreatePromise(address, tx)
-    console.log(result)
 
-    const txResponse = result.response as TransactionResponse
-    console.log('response code', txResponse.getNodetransactionprecheckcode())
-    txResponse.getExtension()
-
+    const c = new CryptoServiceClient(address, grpc.credentials.createInsecure())
+    const callback = (error: grpc.ServiceError | null, response: TransactionResponse) => {
+        console.log(error)
+        console.log(response)
+        if (response !== undefined) {
+            const responseBin = response.serializeBinary()
+            const txRes = TransactionResponse.deserializeBinary(responseBin)
+            console.log(txRes.getNodetransactionprecheckcode())
+            console.log(txRes)
+        }
+        done()
+    }
+    c.createAccount(tx, callback)
 })
 
 

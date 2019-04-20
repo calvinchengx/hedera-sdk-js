@@ -13,4 +13,4 @@ else
   exit 1
 fi
 
-source $(dirname $0)/proto_copy.sh $TARGET
+source $(dirname $0)/proto_link.sh $TARGET

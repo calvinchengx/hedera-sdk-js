@@ -16,7 +16,7 @@ type Sig = Signature | undefined
  * @returns {Sig}
  */
 function signWithKeyAndVerify(
-    message: forge.Bytes,
+    message: string,
     privateKeyHex: string,
     publicKeyHex: string
 ): Sig {

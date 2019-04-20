@@ -1,7 +1,8 @@
 import grpc from 'grpc'
 import { Transaction as TransactionNode } from '../pbnode/Transaction_pb'
 import { Query } from '../pbweb/Query_pb'
-import { Transaction, TransactionBody } from '../pbweb/Transaction_pb'
+import { Transaction } from '../pbweb/Transaction_pb'
+import { TransactionBody } from '../pbweb/TransactionBody_pb';
 import { TransactionResponse } from '../pbweb/TransactionResponse_pb'
 import ClientNode from './clientnode'
 import ClientWeb from './clientweb'
