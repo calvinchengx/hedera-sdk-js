@@ -37,7 +37,7 @@ jobs:
           - v1-dependencies-
       - run:
           name: Install Dependencies
-          command: ln -s ~/repo/hedera-grpc/pbnode-vNext pbnode && ln -s ~/repo/hedera-grpc/pbweb-vNext pbweb && npm install
+          command: ln -sf ~/repo/hedera-grpc/pbnode-vNext ~/repo/pbnode && ln -sf ~/repo/hedera-grpc/pbweb-vNext ~/repo/pbweb && npm install
       - save_cache:
           paths:
             - node_modules
