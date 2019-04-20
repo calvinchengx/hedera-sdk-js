@@ -53,6 +53,7 @@
   },
   "files": [
     "lib/**/*",
+    "hedera-grpc/**/*",
     "pbnode/**/*",
     "pbweb/**/*",
     "bin/**/*"
