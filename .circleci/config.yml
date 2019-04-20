@@ -20,6 +20,7 @@ whitelist: &whitelist
     - tsconfig.json
     - tslint.json
     - jestconfig.json
+    - hedera-grpc/*
     - pbweb/*
     - pbnode/*
 

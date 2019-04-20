@@ -16,7 +16,7 @@
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags",
-    "postinstall": "hedera-proto --proto vNext"
+    "postinstall": "./node_modules/.bin/hedera-proto --proto vNext"
   },
   "repository": {
     "type": "git",
