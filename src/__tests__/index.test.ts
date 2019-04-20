@@ -122,6 +122,7 @@ test('Hedera client has correct values', async () => {
 
 test('Hedera client sends the cryptoCreate transaction', async (done) => {
     if (genesis === undefined) {
+        done()
         return
     }
     const tx = TransactionNode.deserializeBinary(hedera.tx!)
