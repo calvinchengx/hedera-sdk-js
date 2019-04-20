@@ -16,7 +16,7 @@
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags",
-    "postinstall": "npx hedera-proto --proto vNext"
+    "postinstall": "hedera-proto --proto vNext"
   },
   "repository": {
     "type": "git",

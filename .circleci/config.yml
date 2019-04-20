@@ -9,6 +9,7 @@ whitelist: &whitelist
     - coverage/*
     - dist/*
     - lib/*
+    - bin/*
     - node_modules/*
     - src/*
     - test/*
