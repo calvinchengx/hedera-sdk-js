@@ -1,3 +1,4 @@
+import debug from 'debug'
 import grpc from 'grpc'
 import { Transaction as TransactionNode } from '../pbnode/Transaction_pb'
 import { Query } from '../pbweb/Query_pb'
@@ -10,6 +11,7 @@ import HederaAccount from './hederaaccount'
 import HederaNode from './hederanode'
 import { HederaBuilder } from './index'
 
+const log = debug('test')
 type TxCase = TransactionBody.DataCase | undefined
 type QCase = Query.QueryCase | undefined
 
@@ -68,16 +70,16 @@ class Hedera {
         }
         switch (this.txCase) {
             case TransactionBody.DataCase.CRYPTOCREATEACCOUNT:
-                console.log('Crypto Create Account')
+                log('Crypto Create Account')
                 await client.crypto.createAccount(
                     tx,
                     (
                         err: grpc.ServiceError | null,
                         res: TransactionResponse
                     ) => {
-                        console.log('Crypto Create Account callback')
-                        console.log(err)
-                        console.log(res)
+                        log('Crypto Create Account callback')
+                        log(err)
+                        log(res)
                     }
                 )
             case TransactionBody.DataCase.CRYPTOTRANSFER:

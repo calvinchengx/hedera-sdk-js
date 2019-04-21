@@ -41,6 +41,7 @@
     "@types/node": "^11.13.4",
     "codecov": "^3.3.0",
     "commander": "^2.20.0",
+    "debug": "^4.1.1",
     "google-protobuf": "^3.7.1",
     "grpc": "^1.18.0",
     "jest": "^24.7.1",
@@ -60,6 +61,7 @@
     "bin/**/*"
   ],
   "dependencies": {
+    "@types/debug": "^4.1.4",
     "@types/node-forge": "^0.8.2",
     "grpc-web": "^1.0.4",
     "nano-seconds": "^1.2.2",

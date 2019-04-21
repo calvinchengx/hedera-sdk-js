@@ -1,13 +1,15 @@
+import debug from 'debug'
 import grpc from 'grpc'
 import { Hedera, HederaAccount, HederaBuilder } from '..'
 import { CryptoServiceClient } from '../../pbnode/CryptoService_grpc_pb';
-import { ResponseCodeEnum } from '../../pbnode/ResponseCode_pb';
 import { Transaction as TransactionNode } from '../../pbnode/Transaction_pb';
 import { TransactionResponse } from '../../pbnode/TransactionResponse_pb';
 import { Key } from '../../pbweb/BasicTypes_pb'
-import { Transaction } from '../../pbweb/Transaction_pb';
 import HederaNode from '../hederanode'
+import i from '../internal'
 import { exitIfNotNode, getGenesisKeys } from '../utils'
+
+const log = debug('test')
 
 let genesis:
     | {
@@ -128,17 +130,19 @@ test('Hedera client sends the cryptoCreate transaction', async (done) => {
     const tx = TransactionNode.deserializeBinary(hedera.tx!)
     // const address = node.getHostname()
     const address = 'testnet.hedera.com:50006'
-    console.log('gRPC call to', address)
+    log('gRPC call to', address)
 
     const c = new CryptoServiceClient(address, grpc.credentials.createInsecure())
     const callback = (error: grpc.ServiceError | null, response: TransactionResponse) => {
-        console.log(error)
-        console.log(response)
+        log(error)
+        log(response)
         if (response !== undefined) {
             const responseBin = response.serializeBinary()
             const txRes = TransactionResponse.deserializeBinary(responseBin)
-            console.log(txRes.getNodetransactionprecheckcode())
-            console.log(txRes)
+            // ResponseCodeEnum
+            const responseCode = txRes.getNodetransactionprecheckcode()
+            log(i.enumKeyByValue(responseCode))
+            log(txRes.toObject())
         }
         done()
     }
