@@ -1,63 +1,111 @@
-import { CryptoTransferTransactionBody, TransferList } from '../pbweb/CryptoTransfer_pb'
+import debug from 'debug'
+import util from 'util'
+import { AccountID, SignatureList, TransactionID } from '../pbweb/BasicTypes_pb'
+import {
+    AccountAmount,
+    CryptoTransferTransactionBody,
+    TransferList
+} from '../pbweb/CryptoTransfer_pb'
+import { Transaction } from '../pbweb/Transaction_pb'
+import { TransactionBody } from '../pbweb/TransactionBody_pb'
+import fees from './fees'
+import HederaAccount from './hederaaccount'
+import HederaNode from './hederanode'
+import i from './internal'
+import IRecipientList from './irecipientlist'
 
+const log = debug('test')
 
-function cryptoTransfer(transferList: TransferList) {
-    // const transferList = new TransferList()
-    // transferList.add
+const cryptoTransfer = (
+    operator: HederaAccount,
+    node: HederaNode,
+    sender: AccountID,
+    recipientList: IRecipientList[],
+    memo: string = '',
+    record: boolean = false,
+    fee: number = fees()
+): Transaction => {
+    log(`Recipient List ${recipientList}`)
+    log('sender', sender)
+    log('recipientList', recipientList)
+    log('fee', fee)
+
+    const transferList = setRecipientTransferLists(sender, recipientList)
 
     const body = new CryptoTransferTransactionBody()
     body.setTransfers(transferList)
+    const txID = new TransactionID()
+    txID.setAccountid(sender)
+    txID.setTransactionvalidstart(i.getTimestamp())
+
+    log(`The fee is ${fee}`)
+    const txBody = new TransactionBody()
+    txBody.setTransactionid(txID)
+    txBody.setTransactionfee(fee)
+    txBody.setTransactionvalidduration(i.getDuration())
+    txBody.setGeneraterecord(true)
+    txBody.setCryptotransfer(body)
+    txBody.setNodeaccountid(node.getAccountID())
+    txBody.setMemo(memo)
+    txBody.setGeneraterecord(record)
+
+    // sign
+    const txBodyBytes = txBody.serializeBinary().toString()
+    const keypair = operator.getKeyPair()!
+    const privateKeyHex = keypair.getPrivateKeyHex()
+    const publicKeyHex = keypair.getPublicKeyHex()
+    const sig = i.signWithKeyAndVerify(
+        txBodyBytes,
+        privateKeyHex,
+        publicKeyHex
+    )!
+
+    const sigList = new SignatureList()
+    sigList.setSigsList([sig, sig])
+
+    const tx = new Transaction()
+    tx.setBody(txBody)
+    tx.setSigs(sigList)
+    log(util.inspect(tx.toObject(), { showHidden: false, depth: null }))
+    return tx
 }
 
-interface IRecipient {
-    to: string,
-    tinybars: string
-}
-
-/**
- * setRecipientTransferLists prepares the transferList
- * @param {string} sender refers to the sending account. It is a string delimited by dot, of the format 'shardNum.realmNum.accountNum'.
- * @param {IRecipient} recipientList refers to the list of accounts receiving the payment. It consists of the amount and accountID of receiver.
- */
-const setRecipientTransferLists = (sender: string, recipientList: IRecipient[]) =>{
+const setRecipientTransferLists = (
+    sender: AccountID,
+    recipientList: IRecipientList[]
+) => {
     if (recipientList.length === 0) {
         // no recipients for cryptotransfer
-        throw new Error("No recipients for cryptotransfer")
-    }
-
-    for (const recipient in recipientList) {
-        //
-
+        throw new Error('No recipients for cryptotransfer')
     }
 
     const transferList = new TransferList()
-    // let finalList = []
-    // let totalDeducted = 0
-    // for (var k in recipientList) {
-    //     // user[k] = recipientList[k];
-    //     let xAcctAmtRecipient = new AccountAmount()
-    //     xAcctAmtRecipient.setAccountid(i.accountIDFromString(recipientList[k].to))
-    //     xAcctAmtRecipient.setAmount(parseInt(recipientList[k].tinybars))
-    //     console.log("xAcctAmtRecipient", xAcctAmtRecipient)
-    //     finalList.push(xAcctAmtRecipient)
+    const finalList = []
+    let totalDeducted = 0
+    for (const k in recipientList) {
+        if (recipientList.hasOwnProperty(k)) {
+            const accountAmountRecipient = new AccountAmount()
+            accountAmountRecipient.setAccountid(
+                i.accountIDFromString(recipientList[k].to)
+            )
+            accountAmountRecipient.setAmount(
+                parseInt(recipientList[k].tinybars, 10)
+            )
+            finalList.push(accountAmountRecipient)
+            totalDeducted += parseInt(recipientList[k].tinybars, 10)
+        }
+    }
 
-    //     totalDeducted += parseInt(recipientList[k].tinybars)
+    // Last in the list will be the sender
+    log('totalDeducted', totalDeducted)
+    const acctAmtSender = new AccountAmount()
+    acctAmtSender.setAccountid(sender)
+    acctAmtSender.setAmount(-totalDeducted)
+    finalList.push(acctAmtSender)
 
-    // }
-    // // Last in the list will be the sender
-    // console.log("totalDeducted", totalDeducted)
-    // let acctAmtSender = new AccountAmount()
-    // acctAmtSender.setAccountid(i.accountIDFromString(sender))
-    // acctAmtSender.setAmount(-totalDeducted)
-    // finalList.push(acctAmtSender)
-
-    // console.log("listOfRecipients", finalList)
-    // transferList.setAccountamountsList(finalList)
+    log('listOfRecipients', finalList)
+    transferList.setAccountamountsList(finalList)
     return transferList
-}
-
-const sum = (a: number, b: number) => {
-    return a + b
 }
 
 export default cryptoTransfer
