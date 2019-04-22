@@ -3,7 +3,7 @@ import grpc from 'grpc'
 import { Transaction as TransactionNode } from '../pbnode/Transaction_pb'
 import { Query } from '../pbweb/Query_pb'
 import { Transaction } from '../pbweb/Transaction_pb'
-import { TransactionBody } from '../pbweb/TransactionBody_pb';
+import { TransactionBody } from '../pbweb/TransactionBody_pb'
 import { TransactionResponse } from '../pbweb/TransactionResponse_pb'
 import ClientNode from './clientnode'
 import ClientWeb from './clientweb'
@@ -63,9 +63,11 @@ class Hedera {
     private async handleTransaction(mode: string) {
         // defaults to using clientNode
         let client: ClientWeb | ClientNode = this.clientNode
-        let tx: Transaction | TransactionNode = TransactionNode.deserializeBinary(this.tx!)
+        let tx:
+            | Transaction
+            | TransactionNode = TransactionNode.deserializeBinary(this.tx!)
         if (mode === 'web') {
-            client = this.clientWeb 
+            client = this.clientWeb
             tx = Transaction.deserializeBinary(this.tx!)
         }
         switch (this.txCase) {
@@ -101,7 +103,6 @@ class Hedera {
             default:
         }
     }
-
 }
 
 export default Hedera

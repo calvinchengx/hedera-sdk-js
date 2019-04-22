@@ -1,4 +1,3 @@
-
 test('Get Account Balance', () => {
-  //
+    //
 })

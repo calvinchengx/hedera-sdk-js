@@ -2,7 +2,13 @@ import debug from 'debug'
 import grpc from 'grpc'
 import util from 'util'
 import { SignatureList } from '../pbweb/BasicTypes_pb'
-import { Key, Signature, SignatureMap, SignaturePair, TransactionID } from '../pbweb/BasicTypes_pb'
+import {
+    Key,
+    Signature,
+    SignatureMap,
+    SignaturePair,
+    TransactionID
+} from '../pbweb/BasicTypes_pb'
 import { CryptoCreateTransactionBody } from '../pbweb/CryptoCreate_pb'
 import { Duration } from '../pbweb/Duration_pb'
 import { Query } from '../pbweb/Query_pb'
@@ -110,22 +116,27 @@ class HederaBuilder {
                         publicKeyHex
                     ) as Signature
 
-                const sigList = new SignatureList()
-                sigList.setSigsList([sig, sig])
+                    const sigList = new SignatureList()
+                    sigList.setSigsList([sig, sig])
 
-                const sigPair = new SignaturePair()
-                sigPair.setEd25519(sig.getEd25519())
+                    const sigPair = new SignaturePair()
+                    sigPair.setEd25519(sig.getEd25519())
 
-                const sigMap = new SignatureMap()
-                sigMap.addSigpair(sigPair)
-                // sigMap.addSigpair(sigPair)
+                    const sigMap = new SignatureMap()
+                    sigMap.addSigpair(sigPair)
+                    // sigMap.addSigpair(sigPair)
 
-                const tx = new Transaction()
-                tx.setBody(txBody)
-                tx.setSigmap(sigMap)
-                // tx.setSigs(sigList)
-                log(util.inspect(tx.toObject(), {showHidden: false, depth: null}))
-                this.tx = tx.serializeBinary()
+                    const tx = new Transaction()
+                    tx.setBody(txBody)
+                    tx.setSigmap(sigMap)
+                    // tx.setSigs(sigList)
+                    log(
+                        util.inspect(tx.toObject(), {
+                            showHidden: false,
+                            depth: null
+                        })
+                    )
+                    this.tx = tx.serializeBinary()
                 case TransactionBody.DataCase.CRYPTOTRANSFER:
                 // TODO
                 case TransactionBody.DataCase.CONTRACTCALL:

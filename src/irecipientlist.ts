@@ -1,6 +1,6 @@
 interface IRecipientList {
-  tinybars: string
-  to: string
+    tinybars: string
+    to: string
 }
 
 export default IRecipientList

@@ -1,9 +1,9 @@
 import debug from 'debug'
 import grpc from 'grpc'
 import { Hedera, HederaAccount, HederaBuilder } from '..'
-import { CryptoServiceClient } from '../../pbnode/CryptoService_grpc_pb';
-import { Transaction as TransactionNode } from '../../pbnode/Transaction_pb';
-import { TransactionResponse } from '../../pbnode/TransactionResponse_pb';
+import { CryptoServiceClient } from '../../pbnode/CryptoService_grpc_pb'
+import { Transaction as TransactionNode } from '../../pbnode/Transaction_pb'
+import { TransactionResponse } from '../../pbnode/TransactionResponse_pb'
 import { Key } from '../../pbweb/BasicTypes_pb'
 import HederaNode from '../hederanode'
 import i from '../internal'
@@ -55,7 +55,7 @@ beforeAll(async () => {
     newAccount = HederaAccount.init()
     publicKey = newAccount.getKeyPair()!.getPublicKey()
     initialBalance = 10000
-        // instantiate a Hedera client which connects to Hedera network
+    // instantiate a Hedera client which connects to Hedera network
     // via the given node,
     // with the given payingAccount,
     // which pays and signs for transactions/queries
@@ -122,7 +122,7 @@ test('Hedera client has correct values', async () => {
     expect(operator.getKeyPair()).toBe(payingAccount.getKeyPair())
 })
 
-test('Hedera client sends the cryptoCreate transaction', async (done) => {
+test('Hedera client sends the cryptoCreate transaction', async done => {
     if (genesis === undefined) {
         done()
         return
@@ -132,8 +132,14 @@ test('Hedera client sends the cryptoCreate transaction', async (done) => {
     const address = 'testnet.hedera.com:50006'
     log('gRPC call to', address)
 
-    const c = new CryptoServiceClient(address, grpc.credentials.createInsecure())
-    const callback = (error: grpc.ServiceError | null, response: TransactionResponse) => {
+    const c = new CryptoServiceClient(
+        address,
+        grpc.credentials.createInsecure()
+    )
+    const callback = (
+        error: grpc.ServiceError | null,
+        response: TransactionResponse
+    ) => {
         log(error)
         log(response)
         if (response !== undefined) {
@@ -149,23 +155,31 @@ test('Hedera client sends the cryptoCreate transaction', async (done) => {
     c.createAccount(tx, callback)
 }, 30000)
 
-
-async function cryptoCreatePromise(address: string, tx: TransactionNode): Promise<{
-    error: grpc.ServiceError | null;
-    response: TransactionResponse;
+async function cryptoCreatePromise(
+    address: string,
+    tx: TransactionNode
+): Promise<{
+    error: grpc.ServiceError | null
+    response: TransactionResponse
 }> {
     const client = new CryptoServiceClient(
         address,
         grpc.credentials.createInsecure()
     )
     return new Promise((resolve, reject) => {
-        client.createAccount(tx, (error: grpc.ServiceError | null, response: TransactionResponse) => {
-            const result = { error, response }
-            if (error) {
-                reject(result)
-            } else {
-                resolve(result)
+        client.createAccount(
+            tx,
+            (
+                error: grpc.ServiceError | null,
+                response: TransactionResponse
+            ) => {
+                const result = { error, response }
+                if (error) {
+                    reject(result)
+                } else {
+                    resolve(result)
+                }
             }
-        })
+        )
     })
 }

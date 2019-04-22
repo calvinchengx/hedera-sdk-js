@@ -1,7 +1,7 @@
 import * as forge from 'node-forge'
 import { Key, Signature } from '../../pbweb/BasicTypes_pb'
 import { CryptoCreateTransactionBody } from '../../pbweb/CryptoCreate_pb'
-import { TransactionBody } from '../../pbweb/TransactionBody_pb';
+import { TransactionBody } from '../../pbweb/TransactionBody_pb'
 import i from '../internal'
 
 const ed25519 = forge.pki.ed25519
@@ -34,7 +34,7 @@ test('Sanity check: compatibility with protobuf', () => {
     const body = new CryptoCreateTransactionBody()
     body.setKey(key)
 
-    const txBody = new TransactionBody
+    const txBody = new TransactionBody()
     txBody.setCryptocreateaccount(body)
 
     const txBodyBytes = txBody.serializeBinary()

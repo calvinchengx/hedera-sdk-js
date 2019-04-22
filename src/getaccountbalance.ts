@@ -45,10 +45,7 @@ const getAccountBalance = (
     const queryType = new CryptoGetAccountBalanceQuery()
     queryType.setHeader(qHeader)
     queryType.setAccountid(account)
-    log(
-        'Our cryptoGetAccountBalanceQuery is',
-        queryType.toObject()
-    )
+    log('Our cryptoGetAccountBalanceQuery is', queryType.toObject())
     const q = new Query()
     q.setCryptogetaccountbalance(queryType)
     log('Our query, q, is', q.toObject())

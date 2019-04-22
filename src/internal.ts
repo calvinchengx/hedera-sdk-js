@@ -2,7 +2,7 @@ import nano from 'nano-seconds'
 import * as forge from 'node-forge'
 import { AccountID, Signature } from '../pbweb/BasicTypes_pb'
 import { Duration } from '../pbweb/Duration_pb'
-import { ResponseCodeEnum } from '../pbweb/ResponseCode_pb';
+import { ResponseCodeEnum } from '../pbweb/ResponseCode_pb'
 import { Timestamp } from '../pbweb/Timestamp_pb'
 
 const ed25519 = forge.pki.ed25519
@@ -115,8 +115,13 @@ function getFee() {
  * @param {object} enumObject
  * @param {number} value
  */
-function enumKeyByValue(value: number, enumObject: object = ResponseCodeEnum): string {
-    return Object.keys(enumObject).find(key => (enumObject as any)[key] === value) as string
+function enumKeyByValue(
+    value: number,
+    enumObject: object = ResponseCodeEnum
+): string {
+    return Object.keys(enumObject).find(
+        key => (enumObject as any)[key] === value
+    ) as string
 }
 
 /**
@@ -142,10 +147,7 @@ function capitalize(str: string) {
     return str.charAt(0).toUpperCase() + str.substr(1)
 }
 
-export {
-    enumKeyByValue,
-    friendlyHederaResponseCodeEnum
-}
+export { enumKeyByValue, friendlyHederaResponseCodeEnum }
 
 export default {
     accountIDAsString,
