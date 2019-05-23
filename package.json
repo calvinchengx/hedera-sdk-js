@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "test": "jest --config jestconfig.json",
+    "test": "jest",
     "test:cov": "npm run test --collectCoverage=true",
     "test:cov:report": "npm run test:cov && codecov --token=${CODECOV_TOKEN}",
     "build": "tsc",
