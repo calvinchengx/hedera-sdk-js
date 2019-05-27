@@ -31,10 +31,7 @@ jobs:
 
     steps:
       - checkout
-
-      - run:
-          command: ls -la package.json
-
+      
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
