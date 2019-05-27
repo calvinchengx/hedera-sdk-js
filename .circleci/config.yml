@@ -32,7 +32,8 @@ jobs:
     steps:
       - checkout
 
-      - ls -la package.json
+      - run:
+          command: ls -la package.json
 
       - restore_cache:
           keys:
