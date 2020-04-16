@@ -43,7 +43,7 @@
     "commander": "^2.20.0",
     "debug": "^4.1.1",
     "google-protobuf": "^3.7.1",
-    "grpc": "^1.21.1",
+    "grpc": "^1.24.2",
     "jest": "^24.7.1",
     "jsdom": "^14.0.0",
     "prettier": "^1.17.0",
