@@ -9,100 +9,105 @@ import ClientNode from './clientnode'
 import ClientWeb from './clientweb'
 import HederaAccount from './hederaaccount'
 import HederaNode from './hederanode'
-import { HederaBuilder } from './index'
+// import { HederaBuilder } from './index'
 
 const log = debug('test')
 type TxCase = TransactionBody.DataCase | undefined
 type QCase = Query.QueryCase | undefined
 
 class Hedera {
-    public static micropayment(doc: Document) {
-        const tags = doc.getElementsByTagName('hedera-micropayment')
-        if (tags.length === 0) {
-            return null
-        }
-    }
 
-    public clientWeb: ClientWeb
-    public clientNode: ClientNode
-    public node: HederaNode
-    public operator: HederaAccount
-    public tx?: Uint8Array
-    public txCase?: TxCase
+    // public static sanityCheck() {
+    //     log('Just to check that we are doing things correctly')
+    // }
 
-    private qCase?: QCase
-    private q?: Query
+    // public static micropayment(doc: Document) {
+    //     const tags = doc.getElementsByTagName('hedera-micropayment')
+    //     if (tags.length === 0) {
+    //         return null
+    //     }
+    // }
 
-    constructor(build: HederaBuilder) {
-        this.clientWeb = build.clientWeb
-        this.clientNode = build.clientNode
-        this.node = build.node
-        this.operator = build.operator!
-        this.txCase = build.getTxCase()
-        this.tx = build.getTx()
-        this.qCase = build.getQCase()
-        this.q = build.getQ()
-    }
+    // public clientWeb: ClientWeb
+    // public clientNode: ClientNode
+    // public node: HederaNode
+    // public operator: HederaAccount
+    // public tx?: Uint8Array
+    // public txCase?: TxCase
 
-    /**
-     * Send our gRPC call as grpc-node or grpc-web
-     * @param {string} mode - either 'web' or 'node'. 'node' by default
-     */
-    public async send(mode: string = 'node') {
-        if (this.txCase === undefined && this.qCase === undefined) {
-            throw new Error('No transaction or query method invoked')
-        }
-        if (this.txCase !== undefined) {
-            await this.handleTransaction(mode)
-        }
-        if (this.qCase !== undefined) {
-            await this.handleQuery(mode)
-        }
-    }
+    // private qCase?: QCase
+    // private q?: Query
 
-    private async handleTransaction(mode: string) {
-        // defaults to using clientNode
-        let client: ClientWeb | ClientNode = this.clientNode
-        let tx:
-            | Transaction
-            | TransactionNode = TransactionNode.deserializeBinary(this.tx!)
-        if (mode === 'web') {
-            client = this.clientWeb
-            tx = Transaction.deserializeBinary(this.tx!)
-        }
-        switch (this.txCase) {
-            case TransactionBody.DataCase.CRYPTOCREATEACCOUNT:
-                log('Crypto Create Account')
-                await client.crypto.createAccount(
-                    tx,
-                    (
-                        err: grpc.ServiceError | null,
-                        res: TransactionResponse
-                    ) => {
-                        log('Crypto Create Account callback')
-                        log(err)
-                        log(res)
-                    }
-                )
-            case TransactionBody.DataCase.CRYPTOTRANSFER:
-            case TransactionBody.DataCase.CONTRACTCALL:
-            default:
-        }
-    }
+    // constructor(build: HederaBuilder) {
+    //     this.clientWeb = build.clientWeb
+    //     this.clientNode = build.clientNode
+    //     this.node = build.node
+    //     this.operator = build.operator!
+    //     this.txCase = build.getTxCase()
+    //     this.tx = build.getTx()
+    //     this.qCase = build.getQCase()
+    //     this.q = build.getQ()
+    // }
 
-    private async handleQuery(mode: string) {
-        // defaults to using clientNode
-        let client: ClientWeb | ClientNode = this.clientNode
-        if (mode === 'web') {
-            client = this.clientWeb
-        }
-        switch (this.qCase) {
-            case Query.QueryCase.CRYPTOGETACCOUNTBALANCE:
-                client.crypto.cryptoGetBalance()
-            case Query.QueryCase.TRANSACTIONGETRECEIPT:
-            default:
-        }
-    }
+    // /**
+    //  * Send our gRPC call as grpc-node or grpc-web
+    //  * @param {string} mode - either 'web' or 'node'. 'node' by default
+    //  */
+    // public async send(mode: string = 'node') {
+    //     if (this.txCase === undefined && this.qCase === undefined) {
+    //         throw new Error('No transaction or query method invoked')
+    //     }
+    //     if (this.txCase !== undefined) {
+    //         await this.handleTransaction(mode)
+    //     }
+    //     if (this.qCase !== undefined) {
+    //         await this.handleQuery(mode)
+    //     }
+    // }
+
+    // private async handleTransaction(mode: string) {
+    //     // defaults to using clientNode
+    //     let client: ClientWeb | ClientNode = this.clientNode
+    //     let tx:
+    //         | Transaction
+    //         | TransactionNode = TransactionNode.deserializeBinary(this.tx!)
+    //     if (mode === 'web') {
+    //         client = this.clientWeb
+    //         tx = Transaction.deserializeBinary(this.tx!)
+    //     }
+    //     switch (this.txCase) {
+    //         case TransactionBody.DataCase.CRYPTOCREATEACCOUNT:
+    //             log('Crypto Create Account')
+    //             await client.crypto.createAccount(
+    //                 tx,
+    //                 (
+    //                     err: grpc.ServiceError | null,
+    //                     res: TransactionResponse
+    //                 ) => {
+    //                     log('Crypto Create Account callback')
+    //                     log(err)
+    //                     log(res)
+    //                 }
+    //             )
+    //         case TransactionBody.DataCase.CRYPTOTRANSFER:
+    //         case TransactionBody.DataCase.CONTRACTCALL:
+    //         default:
+    //     }
+    // }
+
+    // private async handleQuery(mode: string) {
+    //     // defaults to using clientNode
+    //     let client: ClientWeb | ClientNode = this.clientNode
+    //     if (mode === 'web') {
+    //         client = this.clientWeb
+    //     }
+    //     switch (this.qCase) {
+    //         case Query.QueryCase.CRYPTOGETACCOUNTBALANCE:
+    //             client.crypto.cryptoGetBalance()
+    //         case Query.QueryCase.TRANSACTIONGETRECEIPT:
+    //         default:
+    //     }
+    // }
 }
 
 export default Hedera
