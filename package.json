@@ -68,7 +68,7 @@
     "nano-seconds": "^1.2.2",
     "node-forge": "^0.10.0",
     "protobufjs": "^6.8.8",
-    "ts-node": "^8.1.0",
+    "ts-node": "^8.1.1",
     "typed-promisify": "^0.4.0"
   },
   "bin": {
